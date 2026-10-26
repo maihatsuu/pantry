@@ -34,8 +34,12 @@ No test suite is configured.
 
 ## How the overhaul fits together
 
-- **Balance lives in datapack JSON, not code**: `data/satiated/foods.json` (item id → `tier`, `duration` in ticks, optional `effects` in vanilla `FoodProperties.PossibleEffect` shape, `replace_vanilla_effects`) and `data/satiated/potion_durations.json` (potion id → drinkable duration in ticks). Both load through `data/MergedJsonTable`: every pack's copy is merged per entry in pack order, and `"replace": true` clears earlier packs.
-- **Foods missing from the table** fall back to `SatiatedFoods.fallback` (computed from nutrition and saturation), so modded foods work.
+- **Balance lives in datapack JSON, not code**:
+  - `data/satiated/foods.json` has `groups` (name → `tier`, `duration` in ticks, `items` as ids or `#tags`) and `items` (id → optional `tier`/`duration` overrides, bonus `effects` in vanilla `FoodProperties.PossibleEffect` shape, `replace_vanilla_effects`). It's loaded by `food/FoodTable`.
+  - `data/satiated/potion_durations.json` maps potion id → drinkable duration in ticks. It's loaded by the generic `data/MergedJsonTable`.
+  - Both merge every datapack's copy in pack order, and `"replace": true` clears earlier packs.
+- **`foods.json` is generated; don't hand-edit it.** The source of truth is the CSVs in `balance/`. After changing them, run `python3 balance/generate_foods.py`, which validates names, durations and duplicate group membership before writing.
+- **Food resolution** (`SatiatedFoods.resolve`): the item's `items` override comes first, then a group listing it by id, then a group matching it by tag (last loaded wins ties), then `SatiatedFoods.fallback` computed from nutrition and saturation. Tags are matched at lookup time rather than load time, because the server binds tags after reload listeners run. `FoodTable` keeps groups in insertion order, and so does the sync payload's `LinkedHashMap`, because that order decides ties.
 - **Tables are synced to clients** by `network/SyncTablesPayload` on join and after `/reload`, because the food and potion tooltips read them client-side. Anything new that tooltips depend on must go through this payload. The same static tables are shared by the integrated server and client in singleplayer.
 - **Hunger is neutralised, not removed**: `FoodDataMixin` cancels `tick`/`eat` and keeps food at 20, and `PlayerMixin` makes everything edible and grants Satiated in `Player.eat`. Cake bypasses `Player.eat`, so `CakeBlockMixin` handles it separately (key `minecraft:cake`). Vanilla `addEffect` merging is what gives "stronger Satiated wins".
 - **Potion durations apply only to the drinkable `PotionItem`** (`PotionItemMixin`: drinking plus tooltip). Splash/lingering subclasses inherit `PotionItem`, so the tooltip redirect checks for `ThrowablePotionItem` and keeps vanilla durations for them.

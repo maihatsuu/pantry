@@ -3,6 +3,7 @@ package maihatsuu.satiated.data;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.google.gson.JsonParser;
 import com.mojang.serialization.Codec;
@@ -15,7 +16,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 /**
- * A single JSON file of {@code id -> value} entries, e.g. {@code data/satiated/foods.json}.
+ * A single JSON file of {@code id -> value} entries, e.g. {@code data/satiated/potion_durations.json}.
  * Every datapack's copy is merged in pack order, so higher-priority packs override individual entries.
  * A file with {@code "replace": true} discards everything loaded before it.
  */
@@ -49,23 +50,28 @@ public class MergedJsonTable<V> implements SimpleSynchronousResourceReloadListen
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
 		Map<ResourceLocation, V> merged = new HashMap<>();
-		for (Resource resource : manager.getResourceStack(this.file)) {
-			try (Reader reader = resource.openAsReader()) {
-				this.codec.parse(JsonOps.INSTANCE, JsonParser.parseReader(reader))
-					.resultOrPartial(error -> Satiated.LOGGER.error("Invalid {} in pack {}: {}", this.file, resource.sourcePackId(), error))
-					.ifPresent(layer -> {
-						if (layer.replace()) {
-							merged.clear();
-						}
-						merged.putAll(layer.entries());
-					});
-			} catch (Exception e) {
-				Satiated.LOGGER.error("Failed to read {} from pack {}", this.file, resource.sourcePackId(), e);
+		readLayers(manager, this.file, this.codec, layer -> {
+			if (layer.replace()) {
+				merged.clear();
 			}
-		}
+			merged.putAll(layer.entries());
+		});
 
 		this.set(merged);
 		Satiated.LOGGER.info("Loaded {} entries from {}", merged.size(), this.file);
+	}
+
+	/** Parses every pack's copy of {@code file}, lowest priority first, logging and skipping invalid ones. */
+	public static <L> void readLayers(ResourceManager manager, ResourceLocation file, Codec<L> codec, Consumer<L> consumer) {
+		for (Resource resource : manager.getResourceStack(file)) {
+			try (Reader reader = resource.openAsReader()) {
+				codec.parse(JsonOps.INSTANCE, JsonParser.parseReader(reader))
+					.resultOrPartial(error -> Satiated.LOGGER.error("Invalid {} in pack {}: {}", file, resource.sourcePackId(), error))
+					.ifPresent(consumer);
+			} catch (Exception e) {
+				Satiated.LOGGER.error("Failed to read {} from pack {}", file, resource.sourcePackId(), e);
+			}
+		}
 	}
 
 	private record Layer<V>(boolean replace, Map<ResourceLocation, V> entries) {

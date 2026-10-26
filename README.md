@@ -27,30 +27,50 @@ Balance is data-driven. Both tables are datapack files and can be overridden by 
 
 ### `data/satiated/foods.json`
 
+Foods are sorted into **groups**. Every food in a group gives the same Satiated tier and duration. Individual foods can add bonus effects or override their group.
+
 ```json
 {
-  "foods": {
-    "minecraft:cooked_beef": { "tier": 3, "duration": 6240 },
-    "minecraft:golden_carrot": {
+  "groups": {
+    "cooked_meat": {
       "tier": 2,
-      "duration": 6120,
+      "duration": 6000,
+      "items": ["minecraft:cooked_beef", "minecraft:cooked_porkchop", "#c:foods/cooked_meats"]
+    }
+  },
+  "items": {
+    "minecraft:golden_carrot": {
       "effects": [
-        { "effect": { "id": "minecraft:night_vision", "duration": 1200 }, "probability": 1.0 }
-      ],
-      "replace_vanilla_effects": false
+        { "effect": { "id": "minecraft:night_vision", "duration": 1200 } }
+      ]
     }
   }
 }
 ```
 
-| Field | Description |
+| Group field | Description |
 |---|---|
 | `tier` | Satiated tier, starting at 1. |
 | `duration` | Satiated duration in ticks (20 ticks = 1 second). |
-| `effects` | Optional. Extra effects, in the same format as vanilla food effects. `probability` defaults to 1.0. |
+| `items` | Item ids, or item tags starting with `#`. Tags let modded foods join a group automatically. |
+
+| Item field | Description |
+|---|---|
+| `effects` | Optional. Bonus effects, in the same format as vanilla food effects. `amplifier` is the level minus one, and `probability` defaults to 1.0. |
+| `tier`, `duration` | Optional. Override the item's group. |
 | `replace_vanilla_effects` | Optional. If `true`, the food's built-in effects (e.g. rotten flesh's Hunger) are not applied. |
 
-Cake is keyed as `minecraft:cake` and applies per slice. Foods missing from the table, including modded foods, get a tier and duration calculated from their vanilla nutrition and saturation.
+A food takes its tier and duration from its own `items` entry first, then a group that lists it by id, then a group that matches it by tag. If it matches none of those, the values are calculated from its vanilla nutrition and saturation. If a food is in several groups the same way, the last group loaded wins. Cake is keyed as `minecraft:cake` and applies per slice.
+
+#### Editing the balance spreadsheets
+
+The shipped `foods.json` is generated from the CSVs in [`balance/`](balance), which are the source of truth. Edit the CSVs, then run:
+
+```bash
+python3 balance/generate_foods.py
+```
+
+The CSVs accept in-game names ("Steak", "Raw Cod"), item ids, or `#tags`, and durations like `30s`, `5m` or `1:30`. Bonus levels are written as in-game, so Haste 2 is Haste II. The script lists every problem it finds, such as unknown names, foods in two groups, or durations it can't read, and doesn't write the file until they're fixed.
 
 ### `data/satiated/potion_durations.json`
 
@@ -67,7 +87,7 @@ Maps a potion id to its duration in ticks when drunk. The duration applies to ev
 
 ### Overriding from a datapack
 
-Entries from datapacks are merged on top of the mod's defaults, so a datapack only needs the entries it changes. Add `"replace": true` at the top level of a file to discard every entry loaded before it.
+Entries from datapacks are merged on top of the mod's defaults (per group name, item id or potion id), so a datapack only needs the entries it changes. Redefining a group replaces its whole item list. Add `"replace": true` at the top level of a file to discard every entry loaded before it.
 
 ## Building
 
