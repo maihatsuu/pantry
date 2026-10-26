@@ -2,7 +2,7 @@
 	"groups": {
 		"treats": {
 			"tier": 3,
-			"duration": 600,
+			"duration": 200,
 			"items": [
 				"minecraft:cake",
 				"minecraft:pumpkin_pie",
@@ -17,7 +17,7 @@
 		},
 		"raw_meat": {
 			"tier": 1,
-			"duration": 600,
+			"duration": 1200,
 			"items": [
 				"minecraft:beef",
 				"minecraft:porkchop",
@@ -31,7 +31,7 @@
 		},
 		"cooked_meat": {
 			"tier": 2,
-			"duration": 6000,
+			"duration": 2400,
 			"items": [
 				"minecraft:cooked_porkchop",
 				"minecraft:cooked_beef",
@@ -54,7 +54,7 @@
 		},
 		"vegetables": {
 			"tier": 1,
-			"duration": 1200,
+			"duration": 600,
 			"items": [
 				"minecraft:carrot",
 				"minecraft:beetroot",
@@ -63,8 +63,8 @@
 			]
 		},
 		"baked_foods": {
-			"tier": 2,
-			"duration": 3600,
+			"tier": 1,
+			"duration": 6000,
 			"items": [
 				"minecraft:baked_potato",
 				"minecraft:bread"
@@ -81,7 +81,7 @@
 		},
 		"inedibles": {
 			"tier": 1,
-			"duration": 100,
+			"duration": 200,
 			"items": [
 				"minecraft:rotten_flesh",
 				"minecraft:poisonous_potato",

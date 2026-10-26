@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
  */
 public class SatiatedEffect extends MobEffect {
 	// Ticks between heals, indexed by amplifier. Higher amplifiers use the last value.
-	private static final int[] HEAL_INTERVALS = {100, 50, 25};
+	private static final int[] HEAL_INTERVALS = {200, 100, 20};
 
 	public SatiatedEffect() {
 		super(MobEffectCategory.BENEFICIAL, 0xE8A23A);

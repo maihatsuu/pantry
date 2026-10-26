@@ -8,7 +8,7 @@ Requires [Fabric Loader](https://fabricmc.net/use/) 0.20.1+ and [Fabric API](htt
 
 ### Food
 - **No hunger bar.** Hunger never drains, there is no natural regeneration, and you can't starve.
-- **Food grants Satiated**, a regeneration effect whose tier and duration depend on the food. The heal rate goes up with tier (tier I heals 1 HP every 5s, II every 2.5s, III every 1.25s).
+- **Food grants Satiated**, a regeneration effect whose tier and duration depend on the food. The heal rate goes up with tier (tier I heals half a heart every 10s, II every 5s, III every second).
 - **Food is always edible.** Eating while Satiated keeps whichever effect is stronger: a higher tier replaces the current one, and the same tier keeps the longer duration.
 - **Some foods grant extra effects** on top of Satiated, set in the food table.
 - **Sprinting is locked** at 3 hearts or below.

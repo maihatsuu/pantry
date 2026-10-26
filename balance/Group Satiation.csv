@@ -1,9 +1,9 @@
 Group,Satiated Level,Satiated Duration
-Treats,3,30s
-Raw Meat,1,30s
-Cooked Meat,2,5m
+Treats,3,10s
+Raw Meat,1,1m
+Cooked Meat,2,2m
 Stews,1,10m
-Vegetables,1,1m
-Baked Foods,2,3m
+Vegetables,1,30s
+Baked Foods,1,5m
 Special Foods,2,1m
-Inedibles,1,5s
+Inedibles,1,10s
