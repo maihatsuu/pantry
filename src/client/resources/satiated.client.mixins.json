@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "maihatsuu.satiated.client.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"GuiMixin",
+		"LocalPlayerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

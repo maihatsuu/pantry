@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "satiated",
+	"version": "${version}",
+	"name": "Satiated",
+	"description": "Replaces the hunger bar with a Satiated regeneration effect granted by food, and rebalances potions around it.",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/satiated/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"maihatsuu.satiated.Satiated"
+		],
+		"client": [
+			"maihatsuu.satiated.client.SatiatedClient"
+		]
+	},
+	"mixins": [
+		"satiated.mixins.json",
+		{
+			"config": "satiated.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

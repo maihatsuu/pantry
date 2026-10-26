@@ -1,0 +1,168 @@
+{
+	"foods": {
+		"minecraft:apple": {
+			"tier": 1,
+			"duration": 1920
+		},
+		"minecraft:baked_potato": {
+			"tier": 2,
+			"duration": 3300
+		},
+		"minecraft:beef": {
+			"tier": 1,
+			"duration": 1440
+		},
+		"minecraft:beetroot": {
+			"tier": 1,
+			"duration": 660
+		},
+		"minecraft:beetroot_soup": {
+			"tier": 2,
+			"duration": 3960
+		},
+		"minecraft:bread": {
+			"tier": 2,
+			"duration": 3300
+		},
+		"minecraft:cake": {
+			"tier": 1,
+			"duration": 720
+		},
+		"minecraft:carrot": {
+			"tier": 1,
+			"duration": 1980
+		},
+		"minecraft:chicken": {
+			"tier": 1,
+			"duration": 960
+		},
+		"minecraft:chorus_fruit": {
+			"tier": 1,
+			"duration": 1920
+		},
+		"minecraft:cod": {
+			"tier": 1,
+			"duration": 720
+		},
+		"minecraft:cooked_beef": {
+			"tier": 3,
+			"duration": 6240
+		},
+		"minecraft:cooked_chicken": {
+			"tier": 2,
+			"duration": 3960
+		},
+		"minecraft:cooked_cod": {
+			"tier": 2,
+			"duration": 3300
+		},
+		"minecraft:cooked_mutton": {
+			"tier": 2,
+			"duration": 4680
+		},
+		"minecraft:cooked_porkchop": {
+			"tier": 3,
+			"duration": 6240
+		},
+		"minecraft:cooked_rabbit": {
+			"tier": 2,
+			"duration": 3300
+		},
+		"minecraft:cooked_salmon": {
+			"tier": 2,
+			"duration": 4680
+		},
+		"minecraft:cookie": {
+			"tier": 1,
+			"duration": 720
+		},
+		"minecraft:dried_kelp": {
+			"tier": 1,
+			"duration": 480
+		},
+		"minecraft:enchanted_golden_apple": {
+			"tier": 1,
+			"duration": 4080
+		},
+		"minecraft:glow_berries": {
+			"tier": 1,
+			"duration": 720
+		},
+		"minecraft:golden_apple": {
+			"tier": 1,
+			"duration": 4080
+		},
+		"minecraft:golden_carrot": {
+			"tier": 2,
+			"duration": 6120
+		},
+		"minecraft:honey_bottle": {
+			"tier": 2,
+			"duration": 2160
+		},
+		"minecraft:melon_slice": {
+			"tier": 1,
+			"duration": 960
+		},
+		"minecraft:mushroom_stew": {
+			"tier": 2,
+			"duration": 3960
+		},
+		"minecraft:mutton": {
+			"tier": 1,
+			"duration": 960
+		},
+		"minecraft:poisonous_potato": {
+			"tier": 1,
+			"duration": 960
+		},
+		"minecraft:porkchop": {
+			"tier": 1,
+			"duration": 1440
+		},
+		"minecraft:potato": {
+			"tier": 1,
+			"duration": 480
+		},
+		"minecraft:pufferfish": {
+			"tier": 1,
+			"duration": 360
+		},
+		"minecraft:pumpkin_pie": {
+			"tier": 3,
+			"duration": 3840
+		},
+		"minecraft:rabbit": {
+			"tier": 1,
+			"duration": 1440
+		},
+		"minecraft:rabbit_stew": {
+			"tier": 3,
+			"duration": 6600
+		},
+		"minecraft:rotten_flesh": {
+			"tier": 1,
+			"duration": 1440
+		},
+		"minecraft:salmon": {
+			"tier": 1,
+			"duration": 720
+		},
+		"minecraft:spider_eye": {
+			"tier": 1,
+			"duration": 1560
+		},
+		"minecraft:suspicious_stew": {
+			"tier": 2,
+			"duration": 3960
+		},
+		"minecraft:sweet_berries": {
+			"tier": 1,
+			"duration": 720
+		},
+		"minecraft:tropical_fish": {
+			"tier": 1,
+			"duration": 360
+		}
+	}
+}

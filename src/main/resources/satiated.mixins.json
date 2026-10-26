@@ -1,0 +1,20 @@
+{
+	"required": true,
+	"package": "maihatsuu.satiated.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"CakeBlockMixin",
+		"FoodDataMixin",
+		"HungerMobEffectMixin",
+		"PlayerMixin",
+		"PotionBrewingBuilderMixin",
+		"PotionItemMixin",
+		"SaturationMobEffectMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
