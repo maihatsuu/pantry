@@ -2,8 +2,6 @@ package maihatsuu.pantry;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.minecraft.resources.ResourceLocation;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +13,5 @@ public class Pantry implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModItemComponents.init();
-	}
-
-	public static ResourceLocation id(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 }
