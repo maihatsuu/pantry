@@ -1,0 +1,9 @@
+{
+	"sources": [
+		{
+			"type": "single",
+			"resource": "minecraft:gui/sprites/hud/food_full",
+			"sprite": "satiated:satiated"
+		}
+	]
+}
