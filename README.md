@@ -1,100 +1,28 @@
 # Satiated
 
-A Fabric mod for Minecraft 1.21.1 that keeps vanilla's hunger bar but lets you tune what makes you hungry, gives foods bonus effects, and makes potions last longer.
+A small Fabric mod for Minecraft 1.21.1 that makes food and potions a little nicer. Everything else is vanilla.
 
 Requires [Fabric Loader](https://fabricmc.net/use/) 0.20.1+ and [Fabric API](https://modrinth.com/mod/fabric-api). Must be installed on both the server and the client.
 
 ## Features
 
-### Food
-- **Vanilla hunger and natural regeneration**, with every source of hunger tunable: walking, sprinting, swimming, jumping, mining, attacking, taking damage, healing and the Hunger effect.
-- **Some foods grant bonus effects**, e.g. Haste II from pumpkin pie. They're shown in the food's tooltip.
-- **Soups and stews stack to 16.** Eating from a stack returns the bowl to your inventory.
+### Food bonus effects
+Some foods grant an extra effect, shown in their tooltip:
 
-### Potions
-- **Drinkable potions last longer**, up to 30 minutes with redstone. Splash and lingering potions keep vanilla durations.
-- **Potions stack to 16** (drinkable, splash and lingering).
-
-## Configuration
-
-Balance is data-driven. All three tables are datapack files and can be overridden by any datapack; `/reload` applies changes.
-
-### `data/satiated/exhaustion.json`
-
-```json
-{
-  "costs": {
-    "sprint": 0.1,
-    "heal": 6
-  }
-}
-```
-
-Every action adds *exhaustion*, and every 4 exhaustion drains one point of saturation, or of hunger once saturation is empty. Each cost is in vanilla's units, and `0` makes an action free. Sources not listed keep their vanilla cost.
-
-| Source | Vanilla | Per |
-|---|---|---|
-| `walk`, `crouch` | 0 | meter |
-| `sprint` | 0.1 | meter |
-| `wade`, `walk_underwater`, `swim` | 0.01 | meter |
-| `jump` | 0.05 | jump |
-| `sprint_jump` | 0.2 | jump |
-| `mine` | 0.005 | block broken |
-| `attack` | 0.1 | attack |
-| `damage` | 0.1 | hit taken (scaled by damage type, as in vanilla) |
-| `heal` | 6 | half-heart of natural regeneration |
-| `hunger_effect` | 0.005 | tick, per level of Hunger |
-
-### `data/satiated/foods.json`
-
-```json
-{
-  "items": {
-    "minecraft:golden_carrot": {
-      "effects": [
-        { "effect": { "id": "minecraft:night_vision", "duration": 1200 } }
-      ]
-    }
-  }
-}
-```
-
-| Field | Description |
+| Food | Effect |
 |---|---|
-| `effects` | Bonus effects, in the same format as vanilla food effects. `amplifier` is the level minus one, and `probability` defaults to 1.0. |
-| `replace_vanilla_effects` | Optional. If `true`, the food's built-in effects (e.g. rotten flesh's Hunger) are not applied. |
+| Pumpkin Pie | Haste II, 30s |
+| Cake (per slice) | Speed I, 30s |
+| Cookie | Speed II, 30s |
+| Glow Berries | Glowing, 1 min |
+| Rabbit Stew | Luck II, 30s |
+| Golden Carrot | Night Vision, 1 min |
 
-Cake is keyed as `minecraft:cake` and applies per slice. Hunger and saturation values are vanilla.
+### Longer potions
+Drinkable beneficial potions last **5 minutes**, **10 minutes** with redstone and **2.5 minutes** with glowstone. Harmful potions, splash and lingering potions, and tipped arrows keep vanilla durations.
 
-### `data/satiated/potion_durations.json`
-
-```json
-{
-  "potions": {
-    "minecraft:swiftness": 3600,
-    "minecraft:long_swiftness": 36000
-  }
-}
-```
-
-Maps a potion id to its duration in ticks when drunk. The duration applies to every effect of that potion. Potions not listed keep vanilla durations.
-
-### Editing the balance spreadsheets
-
-The shipped `foods.json` and `exhaustion.json` are generated from the CSVs in [`balance/`](balance), which are the source of truth. Edit the CSVs, then run:
-
-```bash
-python3 balance/generate_balance.py
-```
-
-- `Food Effects.csv` has one row per bonus effect. It accepts in-game names ("Steak", "Raw Cod") or ids, durations like `30s`, `5m` or `1:30`, and levels as in-game, so Haste 2 is Haste II.
-- `Exhaustion.csv` lists every source with its vanilla cost for reference. Edit the **Cost** column.
-
-The script lists every problem it finds, such as unknown names or sources, or values it can't read, and doesn't write anything until they're fixed.
-
-### Overriding from a datapack
-
-Entries from datapacks are merged on top of the mod's defaults (per item, potion or exhaustion source), so a datapack only needs the entries it changes. Add `"replace": true` at the top level of a file to discard every entry loaded before it.
+### Stacking
+Soups, stews and potions (drinkable, splash and lingering) stack to 16. Eating from a stack returns the bowl to your inventory.
 
 ## Building
 

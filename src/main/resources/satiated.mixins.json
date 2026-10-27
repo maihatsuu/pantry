@@ -3,13 +3,9 @@
 	"package": "maihatsuu.satiated.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"BlockMixin",
 		"CakeBlockMixin",
-		"FoodDataMixin",
-		"HungerMobEffectMixin",
 		"PlayerMixin",
-		"PotionItemMixin",
-		"ServerPlayerExhaustionMixin"
+		"PotionItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

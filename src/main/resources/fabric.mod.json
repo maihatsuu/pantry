@@ -3,7 +3,7 @@
 	"id": "satiated",
 	"version": "${version}",
 	"name": "Satiated",
-	"description": "Gentler, tunable hunger, food bonus effects, longer drinkable potions, and stackable soups and potions.",
+	"description": "Food bonus effects, longer drinkable potions, and soups, stews and potions that stack to 16.",
 	"authors": [
 		"Me!"
 	],

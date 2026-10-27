@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-/** Drinkable potions use the durations from potion_durations.json. */
+/** Drinkable potions use the longer durations from PotionDurations. */
 @Mixin(PotionItem.class)
 public class PotionItemMixin {
 	@Redirect(
