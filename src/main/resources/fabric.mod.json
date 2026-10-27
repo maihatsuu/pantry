@@ -3,7 +3,7 @@
 	"id": "satiated",
 	"version": "${version}",
 	"name": "Satiated",
-	"description": "Replaces the hunger bar with a Satiated regeneration effect granted by food, and rebalances potions around it.",
+	"description": "Gentler, tunable hunger, food bonus effects, longer drinkable potions, and stackable soups and potions.",
 	"authors": [
 		"Me!"
 	],

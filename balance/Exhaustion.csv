@@ -1,14 +1,14 @@
 Source,Description,Vanilla Cost,Cost
 walk,per meter walked,0,0
 crouch,per meter crouch-walked,0,0
-sprint,per meter sprinted,0.1,0
-wade,per meter walked in shallow water,0.01,0
-walk_underwater,per meter walked underwater,0.01,0
-swim,per meter swum,0.01,0
-jump,per jump,0.05,0
-sprint_jump,per sprinting jump,0.2,0
-mine,per block broken,0.005,0
-attack,per attack,0.1,0
-damage,per hit taken (most damage types),0.1,0
+sprint,per meter sprinted,0.1,0.05
+wade,per meter walked in shallow water,0.01,0.005
+walk_underwater,per meter walked underwater,0.01,0.005
+swim,per meter swum,0.01,0.005
+jump,per jump,0.05,0.025
+sprint_jump,per sprinting jump,0.2,0.1
+mine,per block broken,0.005,0.0025
+attack,per attack,0.1,0.05
+damage,per hit taken (most damage types),0.1,0.05
 heal,per half-heart of natural regeneration,6,6
 hunger_effect,"per tick, per level of Hunger",0.005,0.01

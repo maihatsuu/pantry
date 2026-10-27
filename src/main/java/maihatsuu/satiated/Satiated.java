@@ -1,7 +1,6 @@
 package maihatsuu.satiated;
 
 import maihatsuu.satiated.exhaustion.ExhaustionCosts;
-import maihatsuu.satiated.exhaustion.Regeneration;
 import maihatsuu.satiated.food.SatiatedFoods;
 import maihatsuu.satiated.network.SyncTablesPayload;
 import maihatsuu.satiated.potion.PotionDurations;
@@ -31,7 +30,6 @@ public class Satiated implements ModInitializer {
 		serverData.registerReloadListener(SatiatedFoods.TABLE);
 		serverData.registerReloadListener(PotionDurations.TABLE);
 		serverData.registerReloadListener(ExhaustionCosts.TABLE);
-		serverData.registerReloadListener(Regeneration.TABLE);
 
 		// Clients need the food and potion tables for tooltips, so resend them on join and after /reload.
 		PayloadTypeRegistry.playS2C().register(SyncTablesPayload.TYPE, SyncTablesPayload.STREAM_CODEC);
