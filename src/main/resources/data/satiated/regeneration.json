@@ -1,0 +1,8 @@
+{
+	"settings": {
+		"fast_regen_min_hunger": 16,
+		"fast_regen_interval": 10,
+		"slow_regen_min_hunger": 2,
+		"slow_regen_interval": 80
+	}
+}

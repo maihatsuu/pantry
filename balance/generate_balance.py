@@ -7,13 +7,16 @@ Individual Foods.csv  Item, Bonus Effect, Bonus Level, Bonus Duration  (one row 
                       -> src/main/resources/data/satiated/foods.json
 Exhaustion.csv        Source, Description, Vanilla Cost, Cost
                       -> src/main/resources/data/satiated/exhaustion.json
+Regeneration.csv      Setting, Description, Vanilla, Value
+                      -> src/main/resources/data/satiated/regeneration.json
 
 Items can be in-game names ("Steak", "Raw Cod") or ids ("minecraft:cooked_beef", "mymod:pasta").
 Effects can be names ("Night Vision") or ids. Bonus levels are written as in-game (Haste 2 = Haste II).
 Durations accept 30s, 5m, 1m30s, 1:30 or plain seconds.
 
 Exhaustion costs are in vanilla's units: every 4 exhaustion drains one point of saturation, or of hunger
-once saturation is empty. 0 makes an action free. Nothing is written if any row has a problem.
+once saturation is empty. 0 makes an action free. Regeneration hunger values are hunger points (20 = full
+bar) and intervals are durations, written in ticks. Nothing is written if any row has a problem.
 """
 
 import csv
@@ -161,15 +164,55 @@ def exhaustion():
     return {"costs": costs}
 
 
+REGENERATION_SETTINGS = {
+    "fast_regen_min_hunger": "hunger",
+    "fast_regen_interval": "interval",
+    "slow_regen_min_hunger": "hunger",
+    "slow_regen_interval": "interval",
+}
+
+
+def hunger_points(text, where):
+    text = text.strip()
+    if not text.isdigit() or not 0 <= int(text) <= 20:
+        errors.append(f"{where}: hunger must be a whole number from 0 to 20, got '{text}'")
+        return 20
+    return int(text)
+
+
+def regeneration():
+    settings = {}
+    for row in rows("Regeneration.csv")[1:]:
+        if not any(row):
+            continue
+        setting = row[0].strip()
+        kind = REGENERATION_SETTINGS.get(setting)
+        if kind is None:
+            errors.append(f"Regeneration.csv: unknown setting '{setting}' (known: {', '.join(REGENERATION_SETTINGS)})")
+            continue
+        if setting in settings:
+            errors.append(f"Regeneration.csv: '{setting}' is listed twice")
+        value = row[3] if len(row) > 3 else ""
+        if kind == "hunger":
+            settings[setting] = hunger_points(value, setting)
+        else:
+            settings[setting] = ticks(value, setting)
+            if settings[setting] < 1:
+                errors.append(f"{setting}: interval must be at least one tick (0.05s), got '{value.strip()}'")
+    for setting in [s for s in REGENERATION_SETTINGS if s not in settings]:
+        print(f"note: '{setting}' isn't in Regeneration.csv and keeps its vanilla value")
+    return {"settings": settings}
+
+
 def main():
-    outputs = {"foods.json": foods(), "exhaustion.json": exhaustion()}
+    outputs = {"foods.json": foods(), "exhaustion.json": exhaustion(), "regeneration.json": regeneration()}
     if errors:
         print("Nothing was written:", *(f"  - {e}" for e in errors), sep="\n", file=sys.stderr)
         sys.exit(1)
 
     for name, data in outputs.items():
         (DATA / name).write_text(json.dumps(data, indent="\t") + "\n", encoding="utf-8")
-    print(f"Wrote {len(outputs['foods.json']['items'])} food entries and {len(outputs['exhaustion.json']['costs'])} exhaustion costs")
+    print(f"Wrote {len(outputs['foods.json']['items'])} food entries, {len(outputs['exhaustion.json']['costs'])} exhaustion costs and {len(outputs['regeneration.json']['settings'])} regeneration settings")
 
 
 if __name__ == "__main__":

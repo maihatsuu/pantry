@@ -7,7 +7,8 @@ Requires [Fabric Loader](https://fabricmc.net/use/) 0.20.1+ and [Fabric API](htt
 ## Features
 
 ### Food
-- **Vanilla hunger and natural regeneration**, with every source of hunger tunable: walking, sprinting, swimming, jumping, mining, attacking, taking damage, healing and the Hunger effect. They ship at vanilla values.
+- **Vanilla hunger and natural regeneration**, with every source of hunger tunable: walking, sprinting, swimming, jumping, mining, attacking, taking damage, healing and the Hunger effect.
+- **Tunable regeneration**: how full the hunger bar must be to heal, and how often it heals.
 - **Some foods grant bonus effects**, e.g. Haste II from pumpkin pie. They're shown in the food's tooltip.
 - **Soups and stews stack to 16.** Eating from a stack returns the bowl to your inventory.
 
@@ -17,7 +18,7 @@ Requires [Fabric Loader](https://fabricmc.net/use/) 0.20.1+ and [Fabric API](htt
 
 ## Configuration
 
-Balance is data-driven. All three tables are datapack files and can be overridden by any datapack; `/reload` applies changes.
+Balance is data-driven. All four tables are datapack files and can be overridden by any datapack; `/reload` applies changes.
 
 ### `data/satiated/exhaustion.json`
 
@@ -44,6 +45,28 @@ Every action adds *exhaustion*, and every 4 exhaustion drains one point of satur
 | `damage` | 0.1 | hit taken (scaled by damage type, as in vanilla) |
 | `heal` | 6 | half-heart of natural regeneration |
 | `hunger_effect` | 0.005 | tick, per level of Hunger |
+
+### `data/satiated/regeneration.json`
+
+```json
+{
+  "settings": {
+    "slow_regen_min_hunger": 18,
+    "slow_regen_interval": 80
+  }
+}
+```
+
+Vanilla heals in two ways. Fast regen runs while the bar is full and saturation is above 0, and pays from saturation. Slow regen heals half a heart at a time while the bar is nearly full. Below that, nothing heals. Settings not listed keep their vanilla value.
+
+| Setting | Vanilla | Meaning |
+|---|---|---|
+| `fast_regen_min_hunger` | 20 | Hunger points (20 = full bar) needed for fast regen |
+| `fast_regen_interval` | 10 | Ticks between fast-regen heals |
+| `slow_regen_min_hunger` | 18 | Hunger points needed for slow regen |
+| `slow_regen_interval` | 80 | Ticks between slow-regen heals |
+
+Each heal costs the `heal` exhaustion per half-heart restored.
 
 ### `data/satiated/foods.json`
 
@@ -81,7 +104,7 @@ Maps a potion id to its duration in ticks when drunk. The duration applies to ev
 
 ### Editing the balance spreadsheets
 
-The shipped `foods.json` and `exhaustion.json` are generated from the CSVs in [`balance/`](balance), which are the source of truth. Edit the CSVs, then run:
+The shipped `foods.json`, `exhaustion.json` and `regeneration.json` are generated from the CSVs in [`balance/`](balance), which are the source of truth. Edit the CSVs, then run:
 
 ```bash
 python3 balance/generate_balance.py
@@ -89,12 +112,13 @@ python3 balance/generate_balance.py
 
 - `Individual Foods.csv` has one row per bonus effect. It accepts in-game names ("Steak", "Raw Cod") or ids, durations like `30s`, `5m` or `1:30`, and levels as in-game, so Haste 2 is Haste II.
 - `Exhaustion.csv` lists every source with its vanilla cost for reference. Edit the **Cost** column.
+- `Regeneration.csv` takes hunger points (0 to 20) and durations like `0.5s` or `4s`. Edit the **Value** column.
 
 The script lists every problem it finds, such as unknown names or sources, or values it can't read, and doesn't write anything until they're fixed.
 
 ### Overriding from a datapack
 
-Entries from datapacks are merged on top of the mod's defaults (per item, potion or exhaustion source), so a datapack only needs the entries it changes. Add `"replace": true` at the top level of a file to discard every entry loaded before it.
+Entries from datapacks are merged on top of the mod's defaults (per item, potion, exhaustion source or regeneration setting), so a datapack only needs the entries it changes. Add `"replace": true` at the top level of a file to discard every entry loaded before it.
 
 ## Building
 

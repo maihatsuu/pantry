@@ -1,0 +1,5 @@
+Setting,Description,Vanilla,Value
+fast_regen_min_hunger,"hunger needed for fast regen, paid from saturation (20 = full bar)",20,16
+fast_regen_interval,time between fast-regen heals,0.5s,0.5s
+slow_regen_min_hunger,hunger needed for slow regen (20 = full bar),18,2
+slow_regen_interval,time between slow-regen heals of half a heart,4s,4s

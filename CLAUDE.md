@@ -34,17 +34,19 @@ No test suite is configured.
 
 ## How the mod fits together
 
-- **Balance lives in datapack JSON, not code.** Three files, all loaded through the generic `data/MergedJsonTable`, which merges every datapack's copy in pack order (`"replace": true` clears earlier packs):
+- **Balance lives in datapack JSON, not code.** Four files, all loaded through the generic `data/MergedJsonTable`, which merges every datapack's copy in pack order (`"replace": true` clears earlier packs):
   - `data/satiated/exhaustion.json`: source → cost.
+  - `data/satiated/regeneration.json`: natural-regen hunger thresholds and intervals (ticks).
   - `data/satiated/foods.json`: item id → bonus `effects` in vanilla `FoodProperties.PossibleEffect` shape, `replace_vanilla_effects`.
   - `data/satiated/potion_durations.json`: potion id → drinkable duration in ticks.
-- **`foods.json` and `exhaustion.json` are generated; don't hand-edit them.** The source of truth is the CSVs in `balance/`. After changing them, run `python3 balance/generate_balance.py`, which validates every row and writes nothing if any row fails.
+- **`foods.json`, `exhaustion.json` and `regeneration.json` are generated; don't hand-edit them.** The source of truth is the CSVs in `balance/`. After changing them, run `python3 balance/generate_balance.py`, which validates every row and writes nothing if any row fails.
 - **Exhaustion** (`exhaustion/ExhaustionCosts`): each vanilla `causeFoodExhaustion`/`addExhaustion` call site has a `@ModifyArg`, in `ServerPlayerExhaustionMixin` (movement), `PlayerMixin` (jump, attack, damage), `BlockMixin` (mining), `FoodDataMixin` (natural regen) and `HungerMobEffectMixin`.
   - `ExhaustionCosts.scale` rescales vanilla's argument by `cost / vanillaCost`, which keeps vanilla's distance, level and damage-type scaling.
   - `walk` and `crouch` cost 0 in vanilla, so their hooks recompute the distance from `checkMovementStatistics`'s own arguments instead.
   - Movement and jump hooks depend on call **ordinals**, which are documented in the mixins. Re-check them against decompiled sources if Minecraft is updated.
   - Table keys are read as `ResourceLocation`s, so `"sprint"` is `minecraft:sprint`.
   - The table isn't synced, since exhaustion is server-authoritative.
+- **Regeneration** (`exhaustion/Regeneration`): `FoodDataMixin` swaps `FoodData.tick`'s int constants (20, 10, 18 and the first 80) with `@ModifyConstant`. The second 80 is the starvation timer and is left alone. Also server-only.
 - **Food bonus effects** (`food/SatiatedFoods`): `PlayerMixin` applies them in `Player.eat` and can strip a food's vanilla effects. Cake bypasses `Player.eat`, so `CakeBlockMixin` handles it (key `minecraft:cake`).
 - **Tables are synced to clients** by `network/SyncTablesPayload` on join and after `/reload`, because the food and potion tooltips read them client-side. Anything new that tooltips depend on must go through this payload. The same static tables are shared by the integrated server and client in singleplayer.
 - **Potion durations apply only to the drinkable `PotionItem`** (`PotionItemMixin`: drinking plus tooltip). Splash/lingering subclasses inherit `PotionItem`, so the tooltip redirect checks for `ThrowablePotionItem` and keeps vanilla durations for them.
