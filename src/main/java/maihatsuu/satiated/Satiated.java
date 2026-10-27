@@ -1,7 +1,7 @@
 package maihatsuu.satiated;
 
-import maihatsuu.satiated.effect.ModEffects;
 import maihatsuu.satiated.food.SatiatedFoods;
+import maihatsuu.satiated.healing.ModAttachments;
 import maihatsuu.satiated.network.SyncTablesPayload;
 import maihatsuu.satiated.potion.PotionDurations;
 import net.fabricmc.api.ModInitializer;
@@ -24,7 +24,7 @@ public class Satiated implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModEffects.init();
+		ModAttachments.init();
 		ModItemComponents.init();
 
 		ResourceManagerHelper serverData = ResourceManagerHelper.get(PackType.SERVER_DATA);

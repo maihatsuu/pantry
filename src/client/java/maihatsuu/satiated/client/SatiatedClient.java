@@ -1,16 +1,15 @@
 package maihatsuu.satiated.client;
 
-import java.util.List;
-
-import maihatsuu.satiated.effect.ModEffects;
 import maihatsuu.satiated.food.SatiatedFoodEntry;
 import maihatsuu.satiated.food.SatiatedFoods;
+import maihatsuu.satiated.healing.HealingQueue;
 import maihatsuu.satiated.network.SyncTablesPayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -20,7 +19,7 @@ public class SatiatedClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(SyncTablesPayload.TYPE, (payload, context) -> payload.apply());
 
-		// Shows what a food grants, e.g. "Satiated II (2:00)", using the same formatting as potion tooltips.
+		// Shows what a food heals, e.g. "Heals 6 ❤ · ½ ❤ every 5s", then its bonus effects as potion lines.
 		ItemTooltipCallback.EVENT.register((stack, tooltipContext, tooltipType, lines) -> {
 			SatiatedFoodEntry entry;
 			FoodProperties food = stack.get(DataComponents.FOOD);
@@ -32,8 +31,15 @@ public class SatiatedClient implements ClientModInitializer {
 				return;
 			}
 
-			MobEffectInstance satiated = new MobEffectInstance(ModEffects.SATIATED, entry.duration(), entry.tier() - 1);
-			PotionContents.addPotionTooltip(List.of(satiated), lines::add, 1.0F, tooltipContext.tickRate());
+			String hearts = entry.healing() % 2 == 0 ? Integer.toString(entry.healing() / 2) : (entry.healing() / 2) + ".5";
+			int seconds = HealingQueue.intervalFor(entry.speed()) / 20;
+			lines.add(Component.translatable("tooltip.satiated.heals", hearts, seconds).withStyle(ChatFormatting.BLUE));
+
+			if (!entry.effects().isEmpty()) {
+				PotionContents.addPotionTooltip(
+					entry.effects().stream().map(FoodProperties.PossibleEffect::effect).toList(), lines::add, 1.0F, tooltipContext.tickRate()
+				);
+			}
 		});
 	}
 }

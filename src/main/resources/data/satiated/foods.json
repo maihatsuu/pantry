@@ -1,8 +1,8 @@
 {
 	"groups": {
 		"treats": {
-			"tier": 3,
-			"duration": 200,
+			"speed": 3,
+			"hearts": 5,
 			"items": [
 				"minecraft:cake",
 				"minecraft:pumpkin_pie",
@@ -16,8 +16,8 @@
 			]
 		},
 		"raw_meat": {
-			"tier": 1,
-			"duration": 1200,
+			"speed": 1,
+			"hearts": 3,
 			"items": [
 				"minecraft:beef",
 				"minecraft:porkchop",
@@ -30,8 +30,8 @@
 			]
 		},
 		"cooked_meat": {
-			"tier": 2,
-			"duration": 2400,
+			"speed": 2,
+			"hearts": 12,
 			"items": [
 				"minecraft:cooked_porkchop",
 				"minecraft:cooked_beef",
@@ -43,8 +43,8 @@
 			]
 		},
 		"stews": {
-			"tier": 1,
-			"duration": 12000,
+			"speed": 1,
+			"hearts": 30,
 			"items": [
 				"minecraft:rabbit_stew",
 				"minecraft:beetroot_soup",
@@ -53,8 +53,8 @@
 			]
 		},
 		"vegetables": {
-			"tier": 1,
-			"duration": 600,
+			"speed": 1,
+			"hearts": 1.5,
 			"items": [
 				"minecraft:carrot",
 				"minecraft:beetroot",
@@ -63,16 +63,16 @@
 			]
 		},
 		"baked_foods": {
-			"tier": 1,
-			"duration": 6000,
+			"speed": 1,
+			"hearts": 15,
 			"items": [
 				"minecraft:baked_potato",
 				"minecraft:bread"
 			]
 		},
 		"special_foods": {
-			"tier": 2,
-			"duration": 1200,
+			"speed": 2,
+			"hearts": 6,
 			"items": [
 				"minecraft:golden_carrot",
 				"minecraft:enchanted_golden_apple",
@@ -80,8 +80,8 @@
 			]
 		},
 		"inedibles": {
-			"tier": 1,
-			"duration": 200,
+			"speed": 1,
+			"hearts": 0.5,
 			"items": [
 				"minecraft:rotten_flesh",
 				"minecraft:poisonous_potato",
