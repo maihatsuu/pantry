@@ -1,6 +1,6 @@
-package maihatsuu.satiated.mixin;
+package maihatsuu.pantry.mixin;
 
-import maihatsuu.satiated.food.SatiatedFoods;
+import maihatsuu.pantry.food.FoodBonuses;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Player.class)
 public class PlayerMixin {
 	@Inject(method = "eat", at = @At("HEAD"))
-	private void satiated$grantBonusEffects(Level level, ItemStack stack, FoodProperties food, CallbackInfoReturnable<ItemStack> cir) {
-		SatiatedFoods.apply((Player) (Object) this, stack.getItem());
+	private void pantry$grantBonusEffects(Level level, ItemStack stack, FoodProperties food, CallbackInfoReturnable<ItemStack> cir) {
+		FoodBonuses.apply((Player) (Object) this, stack.getItem());
 	}
 }

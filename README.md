@@ -1,4 +1,4 @@
-# Satiated
+# Pantry
 
 A small Fabric mod for Minecraft 1.21.1 that makes food and potions a little nicer. Everything else is vanilla.
 

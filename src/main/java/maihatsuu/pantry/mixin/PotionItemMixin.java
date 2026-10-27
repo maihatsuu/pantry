@@ -1,8 +1,8 @@
-package maihatsuu.satiated.mixin;
+package maihatsuu.pantry.mixin;
 
 import java.util.function.Consumer;
 
-import maihatsuu.satiated.potion.PotionDurations;
+import maihatsuu.pantry.potion.PotionDurations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.PotionItem;
@@ -19,7 +19,7 @@ public class PotionItemMixin {
 		method = "finishUsingItem",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/alchemy/PotionContents;forEachEffect(Ljava/util/function/Consumer;)V")
 	)
-	private void satiated$applyDrinkDurations(PotionContents contents, Consumer<MobEffectInstance> consumer) {
+	private void pantry$applyDrinkDurations(PotionContents contents, Consumer<MobEffectInstance> consumer) {
 		PotionDurations.drinkEffects(contents).forEach(consumer);
 	}
 
@@ -28,7 +28,7 @@ public class PotionItemMixin {
 		method = "appendHoverText",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/alchemy/PotionContents;addPotionTooltip(Ljava/util/function/Consumer;FF)V")
 	)
-	private void satiated$showDrinkDurations(PotionContents contents, Consumer<Component> tooltip, float durationFactor, float tickRate) {
+	private void pantry$showDrinkDurations(PotionContents contents, Consumer<Component> tooltip, float durationFactor, float tickRate) {
 		if ((Object) this instanceof ThrowablePotionItem) {
 			contents.addPotionTooltip(tooltip, durationFactor, tickRate);
 		} else {

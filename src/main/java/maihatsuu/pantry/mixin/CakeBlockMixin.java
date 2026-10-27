@@ -1,6 +1,6 @@
-package maihatsuu.satiated.mixin;
+package maihatsuu.pantry.mixin;
 
-import maihatsuu.satiated.food.SatiatedFoods;
+import maihatsuu.pantry.food.FoodBonuses;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(CakeBlock.class)
 public class CakeBlockMixin {
 	@Inject(method = "eat", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;eat(IF)V"))
-	private static void satiated$grantBonusEffects(LevelAccessor level, BlockPos pos, BlockState state, Player player, CallbackInfoReturnable<InteractionResult> cir) {
-		SatiatedFoods.apply(player, Items.CAKE);
+	private static void pantry$grantBonusEffects(LevelAccessor level, BlockPos pos, BlockState state, Player player, CallbackInfoReturnable<InteractionResult> cir) {
+		FoodBonuses.apply(player, Items.CAKE);
 	}
 }

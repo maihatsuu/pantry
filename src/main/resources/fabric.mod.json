@@ -1,31 +1,31 @@
 {
 	"schemaVersion": 1,
-	"id": "satiated",
+	"id": "pantry",
 	"version": "${version}",
-	"name": "Satiated",
+	"name": "Pantry",
 	"description": "Food bonus effects, longer drinkable potions, and soups, stews and potions that stack to 16.",
 	"authors": [
-		"Me!"
+		"maihatsuu"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/maihatsuu/pantry",
+		"sources": "https://github.com/maihatsuu/pantry"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/satiated/icon.png",
+	"icon": "assets/pantry/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"maihatsuu.satiated.Satiated"
+			"maihatsuu.pantry.Pantry"
 		],
 		"client": [
-			"maihatsuu.satiated.client.SatiatedClient"
+			"maihatsuu.pantry.client.PantryClient"
 		]
 	},
 	"mixins": [
-		"satiated.mixins.json",
+		"pantry.mixins.json",
 		{
-			"config": "satiated.client.mixins.json",
+			"config": "pantry.client.mixins.json",
 			"environment": "client"
 		}
 	],

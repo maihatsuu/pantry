@@ -1,4 +1,4 @@
-package maihatsuu.satiated;
+package maihatsuu.pantry;
 
 import java.util.List;
 

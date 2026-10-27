@@ -1,4 +1,4 @@
-package maihatsuu.satiated.potion;
+package maihatsuu.pantry.potion;
 
 import java.util.ArrayList;
 import java.util.List;

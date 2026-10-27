@@ -1,4 +1,4 @@
-package maihatsuu.satiated.food;
+package maihatsuu.pantry.food;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 /** Bonus effects granted by certain foods, on top of their vanilla effects. Cake applies per slice. */
-public final class SatiatedFoods {
+public final class FoodBonuses {
 	private static final int SECONDS = 20;
 
 	private static final Map<Item, List<MobEffectInstance>> BONUSES = Map.of(
@@ -22,7 +22,7 @@ public final class SatiatedFoods {
 		Items.GOLDEN_CARROT, List.of(new MobEffectInstance(MobEffects.NIGHT_VISION, 60 * SECONDS, 0))
 	);
 
-	private SatiatedFoods() {
+	private FoodBonuses() {
 	}
 
 	public static List<MobEffectInstance> bonus(Item item) {

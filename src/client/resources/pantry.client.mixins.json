@@ -1,12 +1,8 @@
 {
 	"required": true,
-	"package": "maihatsuu.satiated.mixin",
+	"package": "maihatsuu.pantry.client.mixin",
 	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"CakeBlockMixin",
-		"PlayerMixin",
-		"PotionItemMixin"
-	],
+	"client": [],
 	"injectors": {
 		"defaultRequire": 1
 	},
