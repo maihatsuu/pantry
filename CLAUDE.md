@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Satiated is a Fabric mod for Minecraft 1.21.1 (mod id `satiated`, package `maihatsuu.satiated`) that overhauls food and potions. The hunger bar is removed, and food instead queues healing that the HUD shows as faded hearts. Sprinting is locked at 3 hearts or below. Drinkable potions get longer durations from a table, and healing/regeneration can't be brewed. Soups, stews and potions stack to 16. `fabric.mod.json` still has the template's authors and contact links.
+Satiated is a Fabric mod for Minecraft 1.21.1 (mod id `satiated`, package `maihatsuu.satiated`). It keeps vanilla's hunger bar and regeneration but makes every exhaustion source tunable, adds per-food bonus effects, gives drinkable potions longer durations from a table, and stacks soups, stews and potions to 16. An earlier design that replaced hunger with a visible healing queue is preserved on the `healing-queue` branch. `fabric.mod.json` still has the template's authors and contact links.
 
 Versions (Minecraft, Fabric Loader, Loom, Fabric API) and the mod version live in `gradle.properties`. Java 21 is the compile target. CI (`.github/workflows/build.yml`) runs `./gradlew build` on JDK 25.
 
@@ -24,7 +24,7 @@ No test suite is configured.
 - **Mojang official mappings**: `build.gradle` uses `loom.officialMojangMappings()`, not Yarn. Use Mojang names (`ResourceLocation`, `MinecraftServer.loadLevel`, `net.minecraft.client.Minecraft`, etc.). Yarn names from Fabric docs or other mods will not compile here.
 - **Split source sets** (`splitEnvironmentSourceSets()`):
   - `src/main/`: common/server-safe code. Entrypoint `Satiated` (`ModInitializer`) registers everything and defines `MOD_ID`, `LOGGER`, and the `Satiated.id(path)` helper for namespaced `ResourceLocation`s.
-  - `src/client/`: client-only code. Entrypoint `client.SatiatedClient` (`ClientModInitializer`) holds the sync receiver and the food tooltip; its mixins hide the hunger HUD, draw the healing queue on the hearts and gate sprinting on health. Client code can reference main, but main must never reference client classes.
+  - `src/client/`: client-only code. Entrypoint `client.SatiatedClient` (`ClientModInitializer`) holds the sync receiver and the bonus-effect tooltip. It currently has no mixins (the client mixin config is empty). Client code can reference main, but main must never reference client classes.
 - **Mixins**: there are two configs, and each new mixin class has to be registered in the right one:
   - `src/main/resources/satiated.mixins.json` (package `maihatsuu.satiated.mixin`, `mixins` array)
   - `src/client/resources/satiated.client.mixins.json` (package `maihatsuu.satiated.client.mixin`, `client` array)
@@ -32,22 +32,19 @@ No test suite is configured.
 - **Assets/data** go under `src/main/resources/assets/satiated/` and `data/satiated/`. `fabric.mod.json` has `${version}` substituted from `gradle.properties` during `processResources`.
 - **`./gradlew runServer`** stops at the EULA prompt until `run/eula.txt` is set to `true`. Most mixin targets only load once a world starts, so a passing `build` doesn't prove the injectors match.
 
-## How the overhaul fits together
+## How the mod fits together
 
-- **Balance lives in datapack JSON, not code**:
-  - `data/satiated/foods.json` has `groups` (name → `speed` 1–3, `hearts` in multiples of 0.5, `items` as ids or `#tags`) and `items` (id → optional `speed`/`hearts` overrides, bonus `effects` in vanilla `FoodProperties.PossibleEffect` shape, `replace_vanilla_effects`). It's loaded by `food/FoodTable`.
-  - `data/satiated/potion_durations.json` maps potion id → drinkable duration in ticks. It's loaded by the generic `data/MergedJsonTable`.
-  - Both merge every datapack's copy in pack order, and `"replace": true` clears earlier packs.
-- **`foods.json` is generated; don't hand-edit it.** The source of truth is the CSVs in `balance/`. After changing them, run `python3 balance/generate_foods.py`, which validates names, speeds, hearts and duplicate group membership before writing.
-- **Food resolution** (`SatiatedFoods.resolve`): the item's `items` override comes first, then a group listing it by id, then a group matching it by tag (last loaded wins ties), then `SatiatedFoods.fallback` computed from nutrition. Tags are matched at lookup time rather than load time, because the server binds tags after reload listeners run. `FoodTable` keeps groups in insertion order, and so does the sync payload's `LinkedHashMap`, because that order decides ties.
+- **Balance lives in datapack JSON, not code.** Three files, all loaded through the generic `data/MergedJsonTable`, which merges every datapack's copy in pack order (`"replace": true` clears earlier packs):
+  - `data/satiated/exhaustion.json`: source → cost.
+  - `data/satiated/foods.json`: item id → bonus `effects` in vanilla `FoodProperties.PossibleEffect` shape, `replace_vanilla_effects`.
+  - `data/satiated/potion_durations.json`: potion id → drinkable duration in ticks.
+- **`foods.json` and `exhaustion.json` are generated; don't hand-edit them.** The source of truth is the CSVs in `balance/`. After changing them, run `python3 balance/generate_balance.py`, which validates every row and writes nothing if any row fails.
+- **Exhaustion** (`exhaustion/ExhaustionCosts`): each vanilla `causeFoodExhaustion`/`addExhaustion` call site has a `@ModifyArg`, in `ServerPlayerExhaustionMixin` (movement), `PlayerMixin` (jump, attack, damage), `BlockMixin` (mining), `FoodDataMixin` (natural regen) and `HungerMobEffectMixin`.
+  - `ExhaustionCosts.scale` rescales vanilla's argument by `cost / vanillaCost`, which keeps vanilla's distance, level and damage-type scaling.
+  - `walk` and `crouch` cost 0 in vanilla, so their hooks recompute the distance from `checkMovementStatistics`'s own arguments instead.
+  - Movement and jump hooks depend on call **ordinals**, which are documented in the mixins. Re-check them against decompiled sources if Minecraft is updated.
+  - Table keys are read as `ResourceLocation`s, so `"sprint"` is `minecraft:sprint`.
+  - The table isn't synced, since exhaustion is server-authoritative.
+- **Food bonus effects** (`food/SatiatedFoods`): `PlayerMixin` applies them in `Player.eat` and can strip a food's vanilla effects. Cake bypasses `Player.eat`, so `CakeBlockMixin` handles it (key `minecraft:cake`).
 - **Tables are synced to clients** by `network/SyncTablesPayload` on join and after `/reload`, because the food and potion tooltips read them client-side. Anything new that tooltips depend on must go through this payload. The same static tables are shared by the integrated server and client in singleplayer.
-- **The healing queue** is `healing/HealingQueue` (`amount` in HP, `interval` ticks per half-heart). It's a Fabric data attachment (`healing/ModAttachments`): persistent, not `copyOnDeath`, and synced to the owning player only.
-  - Speed → interval lives only in `HealingQueue.intervalFor`.
-  - Every `setAttached` syncs, so the queue is only re-set when `amount` changes, never per tick.
-- **Hunger is neutralised, not removed**:
-  - `FoodDataMixin` cancels vanilla `tick`/`eat` and keeps food at 20. Its `tick` (server-only, called from `Player.tick`) instead runs the queue: a timer field on `FoodData` resets whenever the attached queue record changes, Hunger pauses it, and each interval heals 1 HP if hurt and decrements the amount even at full health.
-  - `PlayerMixin` makes everything edible and calls `SatiatedFoods.apply` in `Player.eat`, which **replaces** the queue (never adds).
-  - Cake bypasses `Player.eat`, so `CakeBlockMixin` handles it separately (key `minecraft:cake`).
-- **HUD overlay** (`client/mixin/GuiMixin`): the faded hearts are drawn at `renderHearts` TAIL. `Gui.HeartType` is package-private, so the overlay doesn't hook `renderHeart`; it recomputes vanilla's slot positions, including the low-health shake from `RandomSource.create(tickCount * 312871)` consumed in the same order. If vanilla's heart loop changes, this must change with it.
 - **Potion durations apply only to the drinkable `PotionItem`** (`PotionItemMixin`: drinking plus tooltip). Splash/lingering subclasses inherit `PotionItem`, so the tooltip redirect checks for `ThrowablePotionItem` and keeps vanilla durations for them.
-- **Saturation** is a package-private vanilla class, targeted by string name in `SaturationMobEffectMixin`; it heals instantly instead of feeding.

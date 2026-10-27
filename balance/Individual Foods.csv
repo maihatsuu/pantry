@@ -1,7 +1,7 @@
-Item,Speed,Hearts,Bonus Effect,Bonus Level,Bonus Duration
-Pumpkin Pie,,,Haste,2,30s
-Cake,,,Speed,1,30s
-Cookie,,,Speed,2,30s
-Glow Berries,,,Glowing,1,1m
-Rabbit Stew,,,Luck,2,30s
-Golden Carrot,,,Night Vision,1,1m
+Item,Bonus Effect,Bonus Level,Bonus Duration
+Pumpkin Pie,Haste,2,30s
+Cake,Speed,1,30s
+Cookie,Speed,2,30s
+Glow Berries,Glowing,1,1m
+Rabbit Stew,Luck,2,30s
+Golden Carrot,Night Vision,1,1m

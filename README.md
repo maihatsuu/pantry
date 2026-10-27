@@ -1,45 +1,54 @@
 # Satiated
 
-A Fabric mod for Minecraft 1.21.1 that replaces the hunger bar with food-based healing and rebalances potions around it.
+A Fabric mod for Minecraft 1.21.1 that keeps vanilla's hunger bar but lets you tune what makes you hungry, gives foods bonus effects, and makes potions last longer.
 
 Requires [Fabric Loader](https://fabricmc.net/use/) 0.20.1+ and [Fabric API](https://modrinth.com/mod/fabric-api). Must be installed on both the server and the client.
 
 ## Features
 
 ### Food
-- **No hunger bar.** Hunger never drains, there is no natural regeneration, and you can't starve.
-- **Food queues healing.** Each food heals a set number of hearts at one of three speeds: half a heart every 10s, every 5s, or every second.
-- **The queue shows on the health bar** as faded hearts in the slots it will refill. They turn solid as you heal.
-- **Eating replaces the queue.** Your new food's healing and speed replace whatever was queued, and never add to it, so what you eat is a choice.
-- **The queue runs down even at full health**, so healing can't be banked indefinitely.
-- **Some foods grant bonus effects**, set in the food table. Food is always edible.
-- **Sprinting is locked** at 3 hearts or below.
+- **Vanilla hunger and natural regeneration**, with every source of hunger tunable: walking, sprinting, swimming, jumping, mining, attacking, taking damage, healing and the Hunger effect. They ship at vanilla values.
+- **Some foods grant bonus effects**, e.g. Haste II from pumpkin pie. They're shown in the food's tooltip.
 - **Soups and stews stack to 16.** Eating from a stack returns the bowl to your inventory.
-- **Hunger** (e.g. from rotten flesh) pauses the queue until it wears off. **Saturation** heals instantly.
-- Food tooltips show how much a food heals and how fast, e.g. "Heals 6 ❤ · ½ ❤ every 5s", plus any bonus effects.
 
 ### Potions
 - **Drinkable potions last longer**, up to 30 minutes with redstone. Splash and lingering potions keep vanilla durations.
 - **Potions stack to 16** (drinkable, splash and lingering).
-- **Healing and regeneration can't be brewed.** They can still be obtained in creative or with commands.
 
 ## Configuration
 
-Balance is data-driven. Both tables are datapack files and can be overridden by any datapack; `/reload` applies changes.
+Balance is data-driven. All three tables are datapack files and can be overridden by any datapack; `/reload` applies changes.
 
-### `data/satiated/foods.json`
-
-Foods are sorted into **groups**. Every food in a group heals the same amount at the same speed. Individual foods can add bonus effects or override their group.
+### `data/satiated/exhaustion.json`
 
 ```json
 {
-  "groups": {
-    "cooked_meat": {
-      "speed": 2,
-      "hearts": 12,
-      "items": ["minecraft:cooked_beef", "minecraft:cooked_porkchop", "#c:foods/cooked_meats"]
-    }
-  },
+  "costs": {
+    "sprint": 0.1,
+    "heal": 6
+  }
+}
+```
+
+Every action adds *exhaustion*, and every 4 exhaustion drains one point of saturation, or of hunger once saturation is empty. Each cost is in vanilla's units, and `0` makes an action free. Sources not listed keep their vanilla cost.
+
+| Source | Vanilla | Per |
+|---|---|---|
+| `walk`, `crouch` | 0 | meter |
+| `sprint` | 0.1 | meter |
+| `wade`, `walk_underwater`, `swim` | 0.01 | meter |
+| `jump` | 0.05 | jump |
+| `sprint_jump` | 0.2 | jump |
+| `mine` | 0.005 | block broken |
+| `attack` | 0.1 | attack |
+| `damage` | 0.1 | hit taken (scaled by damage type, as in vanilla) |
+| `heal` | 6 | half-heart of natural regeneration |
+| `hunger_effect` | 0.005 | tick, per level of Hunger |
+
+### `data/satiated/foods.json`
+
+```json
+{
   "items": {
     "minecraft:golden_carrot": {
       "effects": [
@@ -50,29 +59,12 @@ Foods are sorted into **groups**. Every food in a group heals the same amount at
 }
 ```
 
-| Group field | Description |
+| Field | Description |
 |---|---|
-| `speed` | 1 heals half a heart every 10s, 2 every 5s, 3 every second. |
-| `hearts` | Total healing, in multiples of 0.5 (e.g. `6` or `2.5`). |
-| `items` | Item ids, or item tags starting with `#`. Tags let modded foods join a group automatically. |
-
-| Item field | Description |
-|---|---|
-| `effects` | Optional. Bonus effects, in the same format as vanilla food effects. `amplifier` is the level minus one, and `probability` defaults to 1.0. |
-| `speed`, `hearts` | Optional. Override the item's group. |
+| `effects` | Bonus effects, in the same format as vanilla food effects. `amplifier` is the level minus one, and `probability` defaults to 1.0. |
 | `replace_vanilla_effects` | Optional. If `true`, the food's built-in effects (e.g. rotten flesh's Hunger) are not applied. |
 
-A food takes its speed and hearts from its own `items` entry first, then a group that lists it by id, then a group that matches it by tag. If it matches none of those, it heals its vanilla nutrition in half-hearts, faster for more filling foods. If a food is in several groups the same way, the last group loaded wins. Cake is keyed as `minecraft:cake` and applies per slice.
-
-#### Editing the balance spreadsheets
-
-The shipped `foods.json` is generated from the CSVs in [`balance/`](balance), which are the source of truth. Edit the CSVs, then run:
-
-```bash
-python3 balance/generate_foods.py
-```
-
-Groups and overrides use **Speed** (1–3) and **Hearts** columns. The CSVs accept in-game names ("Steak", "Raw Cod"), item ids, or `#tags`. Bonus effect durations can be written like `30s`, `5m` or `1:30`, and bonus levels as in-game, so Haste 2 is Haste II. The script lists every problem it finds, such as unknown names, foods in two groups, or invalid speeds and hearts, and doesn't write the file until they're fixed.
+Cake is keyed as `minecraft:cake` and applies per slice. Hunger and saturation values are vanilla.
 
 ### `data/satiated/potion_durations.json`
 
@@ -87,9 +79,22 @@ Groups and overrides use **Speed** (1–3) and **Hearts** columns. The CSVs acce
 
 Maps a potion id to its duration in ticks when drunk. The duration applies to every effect of that potion. Potions not listed keep vanilla durations.
 
+### Editing the balance spreadsheets
+
+The shipped `foods.json` and `exhaustion.json` are generated from the CSVs in [`balance/`](balance), which are the source of truth. Edit the CSVs, then run:
+
+```bash
+python3 balance/generate_balance.py
+```
+
+- `Individual Foods.csv` has one row per bonus effect. It accepts in-game names ("Steak", "Raw Cod") or ids, durations like `30s`, `5m` or `1:30`, and levels as in-game, so Haste 2 is Haste II.
+- `Exhaustion.csv` lists every source with its vanilla cost for reference. Edit the **Cost** column.
+
+The script lists every problem it finds, such as unknown names or sources, or values it can't read, and doesn't write anything until they're fixed.
+
 ### Overriding from a datapack
 
-Entries from datapacks are merged on top of the mod's defaults (per group name, item id or potion id), so a datapack only needs the entries it changes. Redefining a group replaces its whole item list. Add `"replace": true` at the top level of a file to discard every entry loaded before it.
+Entries from datapacks are merged on top of the mod's defaults (per item, potion or exhaustion source), so a datapack only needs the entries it changes. Add `"replace": true` at the top level of a file to discard every entry loaded before it.
 
 ## Building
 

@@ -1,7 +1,7 @@
 package maihatsuu.satiated;
 
+import maihatsuu.satiated.exhaustion.ExhaustionCosts;
 import maihatsuu.satiated.food.SatiatedFoods;
-import maihatsuu.satiated.healing.ModAttachments;
 import maihatsuu.satiated.network.SyncTablesPayload;
 import maihatsuu.satiated.potion.PotionDurations;
 import net.fabricmc.api.ModInitializer;
@@ -24,14 +24,14 @@ public class Satiated implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModAttachments.init();
 		ModItemComponents.init();
 
 		ResourceManagerHelper serverData = ResourceManagerHelper.get(PackType.SERVER_DATA);
 		serverData.registerReloadListener(SatiatedFoods.TABLE);
 		serverData.registerReloadListener(PotionDurations.TABLE);
+		serverData.registerReloadListener(ExhaustionCosts.TABLE);
 
-		// Clients need both tables for tooltips, so resend them on join and after /reload.
+		// Clients need the food and potion tables for tooltips, so resend them on join and after /reload.
 		PayloadTypeRegistry.playS2C().register(SyncTablesPayload.TYPE, SyncTablesPayload.STREAM_CODEC);
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> sender.sendPacket(SyncTablesPayload.current()));
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {

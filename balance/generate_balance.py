@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""Generates src/main/resources/data/satiated/foods.json from the balance CSVs.
+"""Generates the mod's balance data from the CSVs in this folder.
 
-    python3 balance/generate_foods.py
+    python3 balance/generate_balance.py
 
-Group Foods.csv       one column per group; the cells below each header are its members.
-Group Satiation.csv   Group, Speed, Hearts
-Individual Foods.csv  Item, Speed, Hearts, Bonus Effect, Bonus Level, Bonus Duration
-                      (blank speed/hearts = use the group's; one row per bonus effect)
+Individual Foods.csv  Item, Bonus Effect, Bonus Level, Bonus Duration  (one row per bonus effect)
+                      -> src/main/resources/data/satiated/foods.json
+Exhaustion.csv        Source, Description, Vanilla Cost, Cost
+                      -> src/main/resources/data/satiated/exhaustion.json
 
-Speed is 1-3: 1 heals half a heart every 10s, 2 every 5s, 3 every second.
-Hearts is the total healing, in multiples of 0.5 (e.g. 6 or 2.5).
+Items can be in-game names ("Steak", "Raw Cod") or ids ("minecraft:cooked_beef", "mymod:pasta").
+Effects can be names ("Night Vision") or ids. Bonus levels are written as in-game (Haste 2 = Haste II).
+Durations accept 30s, 5m, 1m30s, 1:30 or plain seconds.
 
-Items can be in-game names ("Steak", "Raw Cod"), ids ("minecraft:cooked_beef", "mymod:pasta")
-or item tags ("#c:foods/cooked_meats"). Effects can be names ("Night Vision") or ids.
-Bonus levels are written as in-game (Haste 2 = Haste II). Durations accept 30s, 5m, 1m30s, 1:30 or plain seconds.
+Exhaustion costs are in vanilla's units: every 4 exhaustion drains one point of saturation, or of hunger
+once saturation is empty. 0 makes an action free. Nothing is written if any row has a problem.
 """
 
 import csv
@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 BALANCE = Path(__file__).resolve().parent
-OUTPUT = BALANCE.parent / "src/main/resources/data/satiated/foods.json"
+DATA = BALANCE.parent / "src/main/resources/data/satiated"
 
 VANILLA_FOODS = {
     "apple", "baked_potato", "beef", "beetroot", "beetroot_soup", "bread", "cake", "carrot", "chicken",
@@ -105,93 +105,71 @@ def level(text, where):
     return int(text)
 
 
-def speed(text, where):
-    text = text.strip()
-    if text not in ("1", "2", "3"):
-        errors.append(f"{where}: speed must be 1, 2 or 3, got '{text}'")
-        return 1
-    return int(text)
-
-
-def hearts(text, where):
-    try:
-        value = float(text.strip())
-    except ValueError:
-        value = -1
-    if value <= 0 or value * 2 != int(value * 2):
-        errors.append(f"{where}: hearts must be a positive multiple of 0.5, got '{text.strip()}'")
-        return 1
-    return int(value) if value == int(value) else value
-
-
 def rows(file):
     with open(BALANCE / file, newline="", encoding="utf-8-sig") as f:
         return [[cell.strip() for cell in row] for row in csv.reader(f)]
 
 
-def main():
-    # Group Foods.csv: headers are group names, cells below are members.
-    group_table = rows("Group Foods.csv")
-    headers = group_table[0]
-    members = {name: [] for name in headers if name}
-    seen = {}
-    for row in group_table[1:]:
-        for name, cell in zip(headers, row):
-            if not name or not cell:
-                continue
-            member = cell if cell.startswith("#") else food_id(cell)
-            if member in seen and seen[member] != name:
-                errors.append(f"'{cell}' is in both '{seen[member]}' and '{name}'")
-            seen[member] = name
-            members[name].append(member)
+EXHAUSTION_SOURCES = {
+    "walk", "crouch", "sprint", "wade", "walk_underwater", "swim", "jump", "sprint_jump",
+    "mine", "attack", "damage", "heal", "hunger_effect",
+}
 
-    groups = {}
-    for row in rows("Group Satiation.csv")[1:]:
-        if not any(row):
-            continue
-        name, group_speed, group_hearts = row[:3]
-        if name not in members:
-            errors.append(f"Group Satiation.csv: '{name}' isn't a column in Group Foods.csv")
-            continue
-        groups[slug(name)] = {
-            "speed": speed(group_speed, name),
-            "hearts": hearts(group_hearts, name),
-            "items": members[name],
-        }
-    for name in members:
-        if slug(name) not in groups:
-            errors.append(f"group '{name}' has no row in Group Satiation.csv")
 
+def cost(text, where):
+    try:
+        value = float(text.strip())
+    except ValueError:
+        value = -1
+    if value < 0:
+        errors.append(f"{where}: cost must be a number from 0, got '{text.strip()}'")
+        return 0
+    return int(value) if value == int(value) else value
+
+
+def foods():
     items = {}
     for row in rows("Individual Foods.csv")[1:]:
         if not any(row):
             continue
-        row += [""] * (6 - len(row))
-        name, item_speed, item_hearts, effect, effect_level, effect_duration = row[:6]
-        item = food_id(name)
-        entry = items.setdefault(item, {})
-        if item_speed:
-            entry["speed"] = speed(item_speed, name)
-        if item_hearts:
-            entry["hearts"] = hearts(item_hearts, name)
+        row += [""] * (4 - len(row))
+        name, effect, effect_level, effect_duration = row[:4]
+        entry = items.setdefault(food_id(name), {})
         if effect:
             instance = {"id": effect_id(effect), "duration": ticks(effect_duration, f"{name} bonus")}
             amplifier = level(effect_level or "1", f"{name} bonus") - 1
             if amplifier:
                 instance["amplifier"] = amplifier
             entry.setdefault("effects", []).append({"effect": instance})
-        if item not in seen and ("speed" not in entry or "hearts" not in entry):
-            print(f"note: '{name}' is in no group, so its missing speed/hearts use the formula fallback")
+    return {"items": items}
 
-    for food in sorted(VANILLA_FOODS - {m.removeprefix("minecraft:") for m in seen}):
-        print(f"note: minecraft:{food} is in no group and will use the formula fallback")
 
+def exhaustion():
+    costs = {}
+    for row in rows("Exhaustion.csv")[1:]:
+        if not any(row):
+            continue
+        source = row[0].strip()
+        if source not in EXHAUSTION_SOURCES:
+            errors.append(f"Exhaustion.csv: unknown source '{source}' (known: {', '.join(sorted(EXHAUSTION_SOURCES))})")
+            continue
+        if source in costs:
+            errors.append(f"Exhaustion.csv: '{source}' is listed twice")
+        costs[source] = cost(row[3] if len(row) > 3 else "", source)
+    for source in sorted(EXHAUSTION_SOURCES - costs.keys()):
+        print(f"note: '{source}' isn't in Exhaustion.csv and keeps its vanilla cost")
+    return {"costs": costs}
+
+
+def main():
+    outputs = {"foods.json": foods(), "exhaustion.json": exhaustion()}
     if errors:
-        print("foods.json was not written:", *(f"  - {e}" for e in errors), sep="\n", file=sys.stderr)
+        print("Nothing was written:", *(f"  - {e}" for e in errors), sep="\n", file=sys.stderr)
         sys.exit(1)
 
-    OUTPUT.write_text(json.dumps({"groups": groups, "items": items}, indent="\t") + "\n", encoding="utf-8")
-    print(f"Wrote {len(groups)} groups and {len(items)} item entries to {OUTPUT.relative_to(BALANCE.parent)}")
+    for name, data in outputs.items():
+        (DATA / name).write_text(json.dumps(data, indent="\t") + "\n", encoding="utf-8")
+    print(f"Wrote {len(outputs['foods.json']['items'])} food entries and {len(outputs['exhaustion.json']['costs'])} exhaustion costs")
 
 
 if __name__ == "__main__":
