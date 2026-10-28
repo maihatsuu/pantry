@@ -12,6 +12,8 @@ import net.minecraft.world.item.Items;
 /** Bonus effects granted by certain foods, on top of their vanilla effects. */
 public final class FoodBonuses {
 	private static final int SECONDS = 20;
+	// Instant bonuses apply at half strength, so Instant Health I heals 1 heart instead of 2.
+	private static final double INSTANT_STRENGTH = 0.5;
 
 	private static final Map<Item, List<MobEffectInstance>> BONUSES = Map.of(
 		Items.PUMPKIN_PIE, List.of(new MobEffectInstance(MobEffects.DIG_SPEED, 30 * SECONDS, 1)),
@@ -39,7 +41,7 @@ public final class FoodBonuses {
 		for (MobEffectInstance effect : bonus(item)) {
 			if (effect.getEffect().value().isInstantenous()) {
 				// Like drinking an instant potion: apply now instead of adding a timed effect.
-				effect.getEffect().value().applyInstantenousEffect(player, player, player, effect.getAmplifier(), 1.0);
+				effect.getEffect().value().applyInstantenousEffect(player, player, player, effect.getAmplifier(), INSTANT_STRENGTH);
 			} else {
 				// addEffect keeps the instance it's given, so hand it a copy.
 				player.addEffect(new MobEffectInstance(effect));
