@@ -12,11 +12,13 @@ Some foods grant an extra effect, shown in their tooltip:
 | Food | Effect |
 |---|---|
 | Pumpkin Pie | Haste II, 30s |
-| Cake (per slice) | Speed I, 30s |
+| Beetroot Soup | Absorption I, 30s |
 | Cookie | Speed II, 30s |
-| Glow Berries | Glowing, 1 min |
+| Glow Berries | Glowing, 30s |
 | Rabbit Stew | Luck II, 30s |
-| Golden Carrot | Night Vision, 1 min |
+| Golden Carrot | Night Vision, 30s |
+| Mushroom Stew | Instant Health I |
+| Baked Potato | Resistance I, 30s |
 
 ### Longer potions
 Drinkable beneficial potions last **5 minutes**, **10 minutes** with redstone and **2.5 minutes** with glowstone. Harmful potions, splash and lingering potions, and tipped arrows keep vanilla durations.
