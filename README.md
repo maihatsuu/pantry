@@ -12,12 +12,12 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 | Food | Effect |
 |---|---|
 | Pumpkin Pie | Haste II, 30s |
-| Beetroot Soup | Absorption I, 30s |
+| Beetroot Soup | Strength I, 30s |
 | Cookie | Speed II, 30s |
 | Glow Berries | Glowing, 30s |
 | Rabbit Stew | Luck II, 30s |
 | Golden Carrot | Night Vision, 30s |
-| Mushroom Stew | Instant Health I |
+| Mushroom Stew | Absorption I, 30s |
 | Baked Potato | Resistance I, 30s |
 
 ### Always edible

@@ -15,12 +15,12 @@ public final class FoodBonuses {
 
 	private static final Map<Item, List<MobEffectInstance>> BONUSES = Map.of(
 		Items.PUMPKIN_PIE, List.of(new MobEffectInstance(MobEffects.DIG_SPEED, 30 * SECONDS, 1)),
-		Items.BEETROOT_SOUP, List.of(new MobEffectInstance(MobEffects.ABSORPTION, 30 * SECONDS, 0)),
+		Items.BEETROOT_SOUP, List.of(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30 * SECONDS, 0)),
 		Items.COOKIE, List.of(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30 * SECONDS, 1)),
 		Items.GLOW_BERRIES, List.of(new MobEffectInstance(MobEffects.GLOWING, 30 * SECONDS, 0)),
 		Items.RABBIT_STEW, List.of(new MobEffectInstance(MobEffects.LUCK, 30 * SECONDS, 1)),
 		Items.GOLDEN_CARROT, List.of(new MobEffectInstance(MobEffects.NIGHT_VISION, 30 * SECONDS, 0)),
-		Items.MUSHROOM_STEW, List.of(new MobEffectInstance(MobEffects.HEAL, 1, 0)),
+		Items.MUSHROOM_STEW, List.of(new MobEffectInstance(MobEffects.ABSORPTION, 30 * SECONDS, 0)),
 		Items.BAKED_POTATO, List.of(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30 * SECONDS, 0))
 	);
 
@@ -36,14 +36,9 @@ public final class FoodBonuses {
 			return;
 		}
 
+		// addEffect keeps the instance it's given, so hand it a copy.
 		for (MobEffectInstance effect : bonus(item)) {
-			if (effect.getEffect().value().isInstantenous()) {
-				// Like drinking an instant potion: apply now instead of adding a timed effect.
-				effect.getEffect().value().applyInstantenousEffect(player, player, player, effect.getAmplifier(), 1.0);
-			} else {
-				// addEffect keeps the instance it's given, so hand it a copy.
-				player.addEffect(new MobEffectInstance(effect));
-			}
+			player.addEffect(new MobEffectInstance(effect));
 		}
 	}
 }
