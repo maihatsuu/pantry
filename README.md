@@ -17,7 +17,7 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 | Glow Berries | Glowing, 30s |
 | Rabbit Stew | Luck II, 30s |
 | Golden Carrot | Night Vision, 30s |
-| Mushroom Stew | Instant Health I, heals 1 heart |
+| Mushroom Stew | Instant Health I |
 | Baked Potato | Resistance I, 30s |
 
 ### Always edible

@@ -33,5 +33,5 @@ No test suite is configured.
 
 Nothing is data-driven; all values are constants in code.
 
-- **Food bonus effects** (`food/FoodBonuses`): a map of item → effects. `PlayerMixin` applies them at the start of `Player.eat` (cake bypasses `Player.eat`, so it can't have a bonus without a `CakeBlock` mixin). `apply` adds copies because `addEffect` keeps the instance it's given, and applies instant effects immediately the way potions do, at half strength (`INSTANT_STRENGTH`), so Mushroom Stew heals 1 heart. There's no tooltip for them, matching vanilla foods, which don't show their effects either.
+- **Food bonus effects** (`food/FoodBonuses`): a map of item → effects. `PlayerMixin` applies them at the start of `Player.eat` (cake bypasses `Player.eat`, so it can't have a bonus without a `CakeBlock` mixin). `apply` adds copies because `addEffect` keeps the instance it's given, and applies instant effects immediately the way potions do. There's no tooltip for them, matching vanilla foods, which don't show their effects either.
 - **Stacking and always-edible** (`ModItemComponents`): via `DefaultItemComponentEvents.MODIFY`, sets `MAX_STACK_SIZE` to 16 and rebuilds every item's `FOOD` component with `canAlwaysEat` true. It must be installed on both sides, or inventories desync and the client refuses to start eating when full.
