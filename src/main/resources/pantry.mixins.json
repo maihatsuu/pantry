@@ -3,8 +3,7 @@
 	"package": "maihatsuu.pantry.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"PlayerMixin",
-		"PotionItemMixin"
+		"PlayerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
