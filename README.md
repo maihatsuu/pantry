@@ -23,6 +23,9 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 ### Longer potions
 Drinkable potions, harmful ones included, last **5 minutes**, or **10 minutes** with redstone. Glowstone doesn't shorten them. Turtle Master, splash and lingering potions, and tipped arrows keep vanilla durations.
 
+### Always edible
+Every food can be eaten even when you're full, like golden apples in vanilla.
+
 ### Stacking
 Soups, stews and potions (drinkable, splash and lingering) stack to 16. Eating from a stack returns the bowl to your inventory.
 
