@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Pantry (formerly Satiated) is a small Fabric mod for Minecraft 1.21.1 (mod id `pantry`, package `maihatsuu.pantry`): some foods grant bonus effects, drinkable beneficial potions last longer, and soups, stews and potions stack to 16. Everything else is vanilla. Earlier, larger designs (a hunger replacement with a healing queue, then tunable exhaustion) are in git history; the healing-queue version is on the `healing-queue` branch.
+Pantry (formerly Satiated) is a small Fabric mod for Minecraft 1.21.1 (mod id `pantry`, package `maihatsuu.pantry`): some foods grant bonus effects, drinkable potions last longer, and soups, stews and potions stack to 16. Everything else is vanilla. Earlier, larger designs (a hunger replacement with a healing queue, then tunable exhaustion) are in git history; the healing-queue version is on the `healing-queue` branch.
 
 Versions (Minecraft, Fabric Loader, Loom, Fabric API) and the mod version live in `gradle.properties`. Java 21 is the compile target. CI (`.github/workflows/build.yml`) runs `./gradlew build` on JDK 25.
 
@@ -34,5 +34,5 @@ No test suite is configured.
 Nothing is data-driven; all values are constants in code.
 
 - **Food bonus effects** (`food/FoodBonuses`): a map of item → effects. `PlayerMixin` applies them at the start of `Player.eat` (cake bypasses `Player.eat`, so it can't have a bonus without a `CakeBlock` mixin). `apply` adds copies because `addEffect` keeps the instance it's given, and applies instant effects immediately the way potions do. The client tooltip reads the same map.
-- **Potion durations** (`potion/PotionDurations`): vanilla (`minecraft:`) potions with any beneficial effect get 5 min, `long_` variants 10 min and `strong_` variants 2.5 min. Instant and custom effects are untouched. `PotionItemMixin` redirects both drinking and the tooltip. Splash/lingering subclasses inherit `PotionItem`, so the tooltip redirect checks for `ThrowablePotionItem` and keeps vanilla durations for them.
+- **Potion durations** (`potion/PotionDurations`): vanilla (`minecraft:`) potions get 5 min (including `strong_` variants) and `long_` variants 10 min, harmful ones included. Turtle Master, instant and custom effects are untouched. `PotionItemMixin` redirects both drinking and the tooltip. Splash/lingering subclasses inherit `PotionItem`, so the tooltip redirect checks for `ThrowablePotionItem` and keeps vanilla durations for them.
 - **Stacking** (`ModItemComponents`): sets `MAX_STACK_SIZE` to 16 via `DefaultItemComponentEvents.MODIFY`. It must be installed on both sides, or inventories desync.

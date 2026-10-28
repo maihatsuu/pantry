@@ -5,21 +5,19 @@ import java.util.List;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Longer durations for drinkable beneficial potions: 5 minutes, 10 with redstone, 2.5 with glowstone.
- * Harmful potions, splash, lingering and tipped arrows keep vanilla durations.
+ * Longer durations for drinkable potions: 5 minutes, 10 with redstone, and glowstone doesn't shorten them.
+ * Turtle Master, splash, lingering and tipped arrows keep vanilla durations.
  */
 public final class PotionDurations {
 	private static final int MINUTE = 60 * 20;
 	private static final int BASE = 5 * MINUTE;
 	private static final int LONG = 10 * MINUTE;
-	private static final int STRONG = 5 * MINUTE / 2;
 
 	private PotionDurations() {
 	}
@@ -51,8 +49,8 @@ public final class PotionDurations {
 	}
 
 	/**
-	 * The drink duration for a vanilla beneficial potion, picked from its id (long_ and strong_ variants),
-	 * or null to keep vanilla's. A potion counts as beneficial if any of its effects is, so Turtle Master does.
+	 * The drink duration for a vanilla potion, picked from its id (long_ variants), or null to keep vanilla's.
+	 * Turtle Master is excluded, since its Slowness would otherwise last minutes.
 	 */
 	@Nullable
 	private static Integer duration(Holder<Potion> potion) {
@@ -61,16 +59,10 @@ public final class PotionDurations {
 			return null;
 		}
 
-		boolean beneficial = potion.value().getEffects().stream()
-			.anyMatch(effect -> effect.getEffect().value().getCategory() == MobEffectCategory.BENEFICIAL);
-		if (!beneficial) {
+		String path = id.getPath();
+		if (path.endsWith("turtle_master")) {
 			return null;
 		}
-
-		String path = id.getPath();
-		if (path.startsWith("long_")) {
-			return LONG;
-		}
-		return path.startsWith("strong_") ? STRONG : BASE;
+		return path.startsWith("long_") ? LONG : BASE;
 	}
 }

@@ -21,7 +21,7 @@ Some foods grant an extra effect, shown in their tooltip:
 | Baked Potato | Resistance I, 30s |
 
 ### Longer potions
-Drinkable beneficial potions last **5 minutes**, **10 minutes** with redstone and **2.5 minutes** with glowstone. Harmful potions, splash and lingering potions, and tipped arrows keep vanilla durations.
+Drinkable potions, harmful ones included, last **5 minutes**, or **10 minutes** with redstone. Glowstone doesn't shorten them. Turtle Master, splash and lingering potions, and tipped arrows keep vanilla durations.
 
 ### Stacking
 Soups, stews and potions (drinkable, splash and lingering) stack to 16. Eating from a stack returns the bowl to your inventory.
