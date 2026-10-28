@@ -27,7 +27,7 @@ public final class FoodBonuses {
 	private FoodBonuses() {
 	}
 
-	public static List<MobEffectInstance> bonus(Item item) {
+	private static List<MobEffectInstance> bonus(Item item) {
 		return BONUSES.getOrDefault(item, List.of());
 	}
 
