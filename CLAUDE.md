@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Pantry (formerly Satiated) is a small Fabric mod for Minecraft 1.21.1 (mod id `pantry`, package `maihatsuu.pantry`): some foods grant bonus effects, and soups, stews and potions stack to 16. Everything else is vanilla. Earlier, larger designs (a hunger replacement with a healing queue, then tunable exhaustion) are in git history; the healing-queue version is on the `healing-queue` branch. Longer potion durations (5 min, 10 with redstone) live on the `extended-potions` branch.
+Pantry (formerly Satiated) is a small Fabric mod for Minecraft 1.21.1 (mod id `pantry`, package `maihatsuu.pantry`): some foods grant bonus effects, all foods can be eaten when full, and soups, stews and potions stack to 16. Everything else is vanilla. Earlier, larger designs (a hunger replacement with a healing queue, then tunable exhaustion) are in git history; the healing-queue version is on the `healing-queue` branch. Longer potion durations (5 min, 10 with redstone) live on the `extended-potions` branch.
 
 Versions (Minecraft, Fabric Loader, Loom, Fabric API) and the mod version live in `gradle.properties`. Java 21 is the compile target. CI (`.github/workflows/build.yml`) runs `./gradlew build` on JDK 25.
 
@@ -34,4 +34,4 @@ No test suite is configured.
 Nothing is data-driven; all values are constants in code.
 
 - **Food bonus effects** (`food/FoodBonuses`): a map of item → effects. `PlayerMixin` applies them at the start of `Player.eat` (cake bypasses `Player.eat`, so it can't have a bonus without a `CakeBlock` mixin). `apply` adds copies because `addEffect` keeps the instance it's given, and applies instant effects immediately the way potions do. There's no tooltip for them, matching vanilla foods, which don't show their effects either.
-- **Stacking** (`ModItemComponents`): sets `MAX_STACK_SIZE` to 16 via `DefaultItemComponentEvents.MODIFY`. It must be installed on both sides, or inventories desync.
+- **Stacking and always-edible** (`ModItemComponents`): via `DefaultItemComponentEvents.MODIFY`, sets `MAX_STACK_SIZE` to 16 and rebuilds every item's `FOOD` component with `canAlwaysEat` true. It must be installed on both sides, or inventories desync and the client refuses to start eating when full.

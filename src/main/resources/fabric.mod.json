@@ -3,7 +3,7 @@
 	"id": "pantry",
 	"version": "${version}",
 	"name": "Pantry",
-	"description": "Food bonus effects, and soups, stews and potions that stack to 16.",
+	"description": "Food bonus effects, foods that can be eaten when full, and soups, stews and potions that stack to 16.",
 	"authors": [
 		"maihatsuu"
 	],
