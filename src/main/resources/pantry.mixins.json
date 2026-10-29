@@ -3,6 +3,7 @@
 	"package": "maihatsuu.pantry.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"CakeBlockMixin",
 		"PlayerMixin",
 		"PotionItemMixin"
 	],

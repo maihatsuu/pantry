@@ -24,7 +24,10 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 Drinkable potions, harmful ones included, last **5 minutes**, or **10 minutes** with redstone. Glowstone doesn't shorten them. Turtle Master, splash and lingering potions, and tipped arrows keep vanilla durations.
 
 ### Always edible
-Every food can be eaten even when you're full, like golden apples in vanilla.
+Every food, cake included, can be eaten even when you're full, like golden apples in vanilla.
+
+### Golden Carrot
+Golden Carrots give 8 saturation instead of 14.4.
 
 ### Faster snacks
 Cookies, Sweet Berries, Glow Berries, Apples, Carrots and Melon Slices take 0.8s to eat instead of 1.6s, like Dried Kelp.
