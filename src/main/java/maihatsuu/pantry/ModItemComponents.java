@@ -19,8 +19,7 @@ public final class ModItemComponents {
 		Items.LINGERING_POTION
 	);
 
-	// Stack to 16 like potions, and are drunk rather than eaten (see ItemMixin).
-	public static final List<Item> SOUPS = List.of(
+	private static final List<Item> SOUPS = List.of(
 		Items.MUSHROOM_STEW,
 		Items.RABBIT_STEW,
 		Items.BEETROOT_SOUP,

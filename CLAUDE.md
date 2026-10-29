@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Pantry (formerly Satiated) is a small Fabric mod for Minecraft 1.21.1 (mod id `pantry`, package `maihatsuu.pantry`): some foods grant bonus effects, all foods can be eaten when full, small snacks eat twice as fast, soups and stews are drunk instead of eaten, soups, stews and potions stack to 16, and cakes stack to 64. Everything else is vanilla. Earlier, larger designs (a hunger replacement with a healing queue, then tunable exhaustion) are in git history; the healing-queue version is on the `healing-queue` branch. Longer potion durations (5 min, 10 with redstone) live on the `extended-potions` branch.
+Pantry (formerly Satiated) is a small Fabric mod for Minecraft 1.21.1 (mod id `pantry`, package `maihatsuu.pantry`): some foods grant bonus effects, all foods can be eaten when full, small snacks eat twice as fast, soups, stews and potions stack to 16, and cakes stack to 64. Everything else is vanilla. Earlier, larger designs (a hunger replacement with a healing queue, then tunable exhaustion) are in git history; the healing-queue version is on the `healing-queue` branch. Longer potion durations (5 min, 10 with redstone) live on the `extended-potions` branch.
 
 Versions (Minecraft, Fabric Loader, Loom, Fabric API) and the mod version live in `gradle.properties`. Java 21 is the compile target. CI (`.github/workflows/build.yml`) runs `./gradlew build` on JDK 25.
 
@@ -34,5 +34,4 @@ No test suite is configured.
 Nothing is data-driven; all values are constants in code.
 
 - **Food bonus effects** (`food/FoodBonuses`): a map of item → effects. `PlayerMixin` applies them at the start of `Player.eat` (cake bypasses `Player.eat`, so it can't have a bonus without a `CakeBlock` mixin). `apply` adds copies because `addEffect` keeps the instance it's given. Bonuses are timed effects only; an instant one (like Instant Health) would need `applyInstantenousEffect` instead of `addEffect`. There's no tooltip for them, matching vanilla foods, which don't show their effects either.
-- **Sipped soups** (`ItemMixin`): for items in `ModItemComponents.SOUPS`, `Item.getUseAnimation` returns `DRINK` and `getEatingSound` returns `GENERIC_DRINK`, the same pattern vanilla's `HoneyBottleItem` uses.
 - **Stacking and always-edible** (`ModItemComponents`): via `DefaultItemComponentEvents.MODIFY`, sets `MAX_STACK_SIZE` (16 for potions and `SOUPS`, 64 for cake) and rebuilds every item's `FOOD` component with `canAlwaysEat` true and, for `FAST_FOODS`, a 0.8s eat time. It must be installed on both sides, or inventories desync and the client refuses to start eating when full.

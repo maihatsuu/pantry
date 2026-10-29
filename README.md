@@ -29,9 +29,6 @@ Cookies, Sweet Berries, Glow Berries, Apples, Carrots and Melon Slices take 0.8s
 ### Stacking
 Soups, stews and potions (drinkable, splash and lingering) stack to 16, and cakes stack to 64. Eating from a stack returns the bowl to your inventory.
 
-### Sipped soups
-Soups and stews are drunk like a Honey Bottle, with the drinking sound and animation instead of crunching.
-
 ## Building
 
 ```bash
