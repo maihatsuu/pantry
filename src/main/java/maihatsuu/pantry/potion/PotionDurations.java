@@ -2,6 +2,7 @@ package maihatsuu.pantry.potion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -11,13 +12,23 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Longer durations for drinkable potions: 5 minutes, 10 with redstone, and glowstone doesn't shorten them.
- * Turtle Master, splash, lingering and tipped arrows keep vanilla durations.
+ * Longer durations for some drinkable potions: 4 minutes, 8 with redstone, and glowstone doesn't shorten them.
+ * Other potions, splash, lingering and tipped arrows keep vanilla durations.
  */
 public final class PotionDurations {
 	private static final int MINUTE = 60 * 20;
-	private static final int BASE = 5 * MINUTE;
-	private static final int LONG = 10 * MINUTE;
+	private static final int BASE = 4 * MINUTE;
+	private static final int LONG = 8 * MINUTE;
+
+	private static final Set<String> EXTENDED = Set.of(
+		"swiftness",
+		"strength",
+		"leaping",
+		"night_vision",
+		"invisibility",
+		"fire_resistance",
+		"water_breathing"
+	);
 
 	private PotionDurations() {
 	}
@@ -49,8 +60,8 @@ public final class PotionDurations {
 	}
 
 	/**
-	 * The drink duration for a vanilla potion, picked from its id (long_ variants), or null to keep vanilla's.
-	 * Turtle Master is excluded, since its Slowness would otherwise last minutes.
+	 * The drink duration for one of the EXTENDED vanilla potions, picked from its id (long_ variants),
+	 * or null to keep vanilla's.
 	 */
 	@Nullable
 	private static Integer duration(Holder<Potion> potion) {
@@ -60,9 +71,11 @@ public final class PotionDurations {
 		}
 
 		String path = id.getPath();
-		if (path.endsWith("turtle_master")) {
+		boolean isLong = path.startsWith("long_");
+		String base = path.replaceFirst("^(long|strong)_", "");
+		if (!EXTENDED.contains(base)) {
 			return null;
 		}
-		return path.startsWith("long_") ? LONG : BASE;
+		return isLong ? LONG : BASE;
 	}
 }

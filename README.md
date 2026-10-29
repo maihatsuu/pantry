@@ -21,7 +21,7 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 | Baked Potato | Resistance I, 30s |
 
 ### Longer potions
-Drinkable potions, harmful ones included, last **5 minutes**, or **10 minutes** with redstone. Glowstone doesn't shorten them. Turtle Master, splash and lingering potions, and tipped arrows keep vanilla durations.
+Drinkable Swiftness, Strength, Leaping, Night Vision, Invisibility, Fire Resistance and Water Breathing last **4 minutes**, or **8 minutes** with redstone. Glowstone doesn't shorten them. Other potions, splash and lingering potions, and tipped arrows keep vanilla durations.
 
 ### Always edible
 Every food, cake included, can be eaten even when you're full, like golden apples in vanilla.
