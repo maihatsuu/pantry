@@ -12,6 +12,8 @@ public final class ModItemComponents {
 	public static final int STACK_SIZE = 16;
 	// Same as vanilla Dried Kelp, twice as fast as the default 1.6s.
 	private static final float FAST_EAT_SECONDS = 0.8F;
+	// Down from vanilla's 14.4.
+	private static final float GOLDEN_CARROT_SATURATION = 8.0F;
 
 	private static final List<Item> POTIONS = List.of(
 		Items.POTION,
@@ -49,9 +51,10 @@ public final class ModItemComponents {
 		DefaultItemComponentEvents.MODIFY.register(context ->
 			context.modify(item -> item.components().has(DataComponents.FOOD), (builder, item) -> {
 				FoodProperties food = item.components().get(DataComponents.FOOD);
+				float saturation = item == Items.GOLDEN_CARROT ? GOLDEN_CARROT_SATURATION : food.saturation();
 				float eatSeconds = FAST_FOODS.contains(item) ? FAST_EAT_SECONDS : food.eatSeconds();
 				builder.set(DataComponents.FOOD, new FoodProperties(
-					food.nutrition(), food.saturation(), true, eatSeconds, food.usingConvertsTo(), food.effects()
+					food.nutrition(), saturation, true, eatSeconds, food.usingConvertsTo(), food.effects()
 				));
 			})
 		);
