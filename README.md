@@ -26,8 +26,11 @@ Drinkable potions, harmful ones included, last **5 minutes**, or **10 minutes** 
 ### Always edible
 Every food can be eaten even when you're full, like golden apples in vanilla.
 
+### Faster snacks
+Cookies, Sweet Berries, Glow Berries, Apples, Carrots and Melon Slices take 0.8s to eat instead of 1.6s, like Dried Kelp.
+
 ### Stacking
-Soups, stews and potions (drinkable, splash and lingering) stack to 16. Eating from a stack returns the bowl to your inventory.
+Soups, stews and potions (drinkable, splash and lingering) stack to 16, and cakes stack to 64. Eating from a stack returns the bowl to your inventory.
 
 ## Building
 
