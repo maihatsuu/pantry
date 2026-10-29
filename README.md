@@ -15,7 +15,7 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 | Beetroot Soup | Strength I, 30s |
 | Cookie | Speed II, 30s |
 | Glow Berries | Glowing, 30s |
-| Rabbit Stew | Luck II, 30s |
+| Rabbit Stew | Jump Boost II, 30s |
 | Golden Carrot | Night Vision, 30s |
 | Mushroom Stew | Absorption I, 30s |
 | Baked Potato | Resistance I, 30s |
@@ -33,7 +33,7 @@ Golden Carrots give 8 saturation instead of 14.4.
 Cookies, Sweet Berries, Glow Berries, Apples, Carrots and Melon Slices take 0.8s to eat instead of 1.6s, like Dried Kelp.
 
 ### Stacking
-Soups, stews and potions (drinkable, splash and lingering) stack to 16, and cakes stack to 64. Eating from a stack returns the bowl to your inventory.
+Soups, stews, and potions (drinkable, splash and lingering) stack to 16, and cakes stack to 64. Eating from a stack returns the bowl/bottle to your inventory.
 
 ## Building
 

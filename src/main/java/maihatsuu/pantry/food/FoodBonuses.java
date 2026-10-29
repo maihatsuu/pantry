@@ -18,7 +18,7 @@ public final class FoodBonuses {
 		Items.BEETROOT_SOUP, List.of(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30 * SECONDS, 0)),
 		Items.COOKIE, List.of(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30 * SECONDS, 1)),
 		Items.GLOW_BERRIES, List.of(new MobEffectInstance(MobEffects.GLOWING, 30 * SECONDS, 0)),
-		Items.RABBIT_STEW, List.of(new MobEffectInstance(MobEffects.LUCK, 30 * SECONDS, 1)),
+		Items.RABBIT_STEW, List.of(new MobEffectInstance(MobEffects.JUMP, 30 * SECONDS, 1)),
 		Items.GOLDEN_CARROT, List.of(new MobEffectInstance(MobEffects.NIGHT_VISION, 30 * SECONDS, 0)),
 		Items.MUSHROOM_STEW, List.of(new MobEffectInstance(MobEffects.ABSORPTION, 30 * SECONDS, 0)),
 		Items.BAKED_POTATO, List.of(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30 * SECONDS, 0))
