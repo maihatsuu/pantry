@@ -32,7 +32,7 @@ Golden Carrots give 8 saturation instead of 14.4.
 Cookies, Sweet Berries, Glow Berries, Apples, Carrots and Melon Slices take 0.8s to eat instead of 1.6s, like Dried Kelp.
 
 ### Stacking
-Soups, stews, and potions (drinkable, splash and lingering) stack to 16, and cakes stack to 64. Eating from a stack returns the bowl/bottle to your inventory.
+Soups, stews, potions (drinkable, splash and lingering) and cakes stack to 16. Eating from a stack returns the bowl/bottle to your inventory.
 
 ## Config
 

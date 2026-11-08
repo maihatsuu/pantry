@@ -49,7 +49,7 @@ public final class ModItemComponents {
 			}
 			context.modify(POTIONS, (builder, item) -> builder.set(DataComponents.MAX_STACK_SIZE, STACK_SIZE));
 			context.modify(SOUPS, (builder, item) -> builder.set(DataComponents.MAX_STACK_SIZE, STACK_SIZE));
-			context.modify(Items.CAKE, builder -> builder.set(DataComponents.MAX_STACK_SIZE, 64));
+			context.modify(Items.CAKE, builder -> builder.set(DataComponents.MAX_STACK_SIZE, STACK_SIZE));
 		});
 
 		// Every food can be eaten when full, like golden apples and chorus fruit in vanilla, and small snacks eat faster.
