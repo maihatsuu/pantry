@@ -7,7 +7,7 @@ Requires [Fabric Loader](https://fabricmc.net/use/) 0.20.1+ and [Fabric API](htt
 ## Features
 
 ### Food bonus effects
-Some foods grant an extra effect. Like vanilla food effects, they aren't shown in the tooltip.
+Some foods grant an extra effect. Food tooltips list these, along with the beneficial effects of vanilla foods like Golden Apples. Harmful effects stay hidden.
 
 | Food | Effect |
 |---|---|

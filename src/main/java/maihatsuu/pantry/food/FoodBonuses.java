@@ -27,12 +27,13 @@ public final class FoodBonuses {
 	private FoodBonuses() {
 	}
 
-	private static List<MobEffectInstance> bonus(Item item) {
-		return BONUSES.getOrDefault(item, List.of());
+	/** The item's bonus effects, or none if food bonuses are switched off. */
+	public static List<MobEffectInstance> bonus(Item item) {
+		return PantryConfig.get().foodBonuses ? BONUSES.getOrDefault(item, List.of()) : List.of();
 	}
 
 	public static void apply(Player player, Item item) {
-		if (player.level().isClientSide() || !PantryConfig.get().foodBonuses) {
+		if (player.level().isClientSide()) {
 			return;
 		}
 

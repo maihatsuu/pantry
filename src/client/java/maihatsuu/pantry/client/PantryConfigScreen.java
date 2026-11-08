@@ -26,6 +26,7 @@ final class PantryConfigScreen {
 		ConfigCategory general = builder.getOrCreateCategory(Component.translatable("config.pantry.general"));
 
 		toggle(general, entries, "foodBonuses", config.foodBonuses, defaults.foodBonuses, false, value -> config.foodBonuses = value);
+		toggle(general, entries, "foodEffectTooltips", config.foodEffectTooltips, defaults.foodEffectTooltips, false, value -> config.foodEffectTooltips = value);
 		toggle(general, entries, "eatWhenFull", config.eatWhenFull, defaults.eatWhenFull, true, value -> config.eatWhenFull = value);
 		toggle(general, entries, "fastSnacks", config.fastSnacks, defaults.fastSnacks, true, value -> config.fastSnacks = value);
 		toggle(general, entries, "biggerStacks", config.biggerStacks, defaults.biggerStacks, true, value -> config.biggerStacks = value);

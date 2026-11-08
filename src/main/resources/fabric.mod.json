@@ -18,6 +18,9 @@
 		"main": [
 			"maihatsuu.pantry.Pantry"
 		],
+		"client": [
+			"maihatsuu.pantry.client.PantryClient"
+		],
 		"modmenu": [
 			"maihatsuu.pantry.client.ModMenuIntegration"
 		]

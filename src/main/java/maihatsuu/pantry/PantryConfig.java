@@ -23,6 +23,7 @@ public final class PantryConfig {
 	private static PantryConfig instance;
 
 	public boolean foodBonuses = true;
+	public boolean foodEffectTooltips = true;
 	public boolean eatWhenFull = true;
 	public boolean fastSnacks = true;
 	public boolean biggerStacks = true;
