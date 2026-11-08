@@ -18,7 +18,6 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 | Rabbit Stew | Jump Boost II, 30s |
 | Golden Carrot | Night Vision, 30s |
 | Mushroom Stew | Absorption I, 30s |
-| Baked Potato | Resistance I, 30s |
 
 ### Longer potions (off by default)
 Drinkable Swiftness, Strength, Leaping, Night Vision, Invisibility, Fire Resistance and Water Breathing last **4 minutes**, or **8 minutes** with redstone. Glowstone doesn't shorten them. Other potions, splash and lingering potions, and tipped arrows keep vanilla durations.
