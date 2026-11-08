@@ -41,7 +41,12 @@ public final class ModItemComponents {
 	}
 
 	public static void init() {
+		PantryConfig config = PantryConfig.get();
+
 		DefaultItemComponentEvents.MODIFY.register(context -> {
+			if (!config.biggerStacks) {
+				return;
+			}
 			context.modify(POTIONS, (builder, item) -> builder.set(DataComponents.MAX_STACK_SIZE, STACK_SIZE));
 			context.modify(SOUPS, (builder, item) -> builder.set(DataComponents.MAX_STACK_SIZE, STACK_SIZE));
 			context.modify(Items.CAKE, builder -> builder.set(DataComponents.MAX_STACK_SIZE, 64));
@@ -51,10 +56,12 @@ public final class ModItemComponents {
 		DefaultItemComponentEvents.MODIFY.register(context ->
 			context.modify(item -> item.components().has(DataComponents.FOOD), (builder, item) -> {
 				FoodProperties food = item.components().get(DataComponents.FOOD);
-				float saturation = item == Items.GOLDEN_CARROT ? GOLDEN_CARROT_SATURATION : food.saturation();
-				float eatSeconds = FAST_FOODS.contains(item) ? FAST_EAT_SECONDS : food.eatSeconds();
+				boolean nerfCarrot = config.goldenCarrotNerf && item == Items.GOLDEN_CARROT;
+				float saturation = nerfCarrot ? GOLDEN_CARROT_SATURATION : food.saturation();
+				float eatSeconds = config.fastSnacks && FAST_FOODS.contains(item) ? FAST_EAT_SECONDS : food.eatSeconds();
+				boolean canAlwaysEat = config.eatWhenFull || food.canAlwaysEat();
 				builder.set(DataComponents.FOOD, new FoodProperties(
-					food.nutrition(), saturation, true, eatSeconds, food.usingConvertsTo(), food.effects()
+					food.nutrition(), saturation, canAlwaysEat, eatSeconds, food.usingConvertsTo(), food.effects()
 				));
 			})
 		);

@@ -12,6 +12,7 @@ public class Pantry implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		PantryConfig.get();
 		ModItemComponents.init();
 	}
 }

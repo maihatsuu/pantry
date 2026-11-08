@@ -20,6 +20,9 @@ Some foods grant an extra effect. Like vanilla food effects, they aren't shown i
 | Mushroom Stew | Absorption I, 30s |
 | Baked Potato | Resistance I, 30s |
 
+### Longer potions (off by default)
+Drinkable Swiftness, Strength, Leaping, Night Vision, Invisibility, Fire Resistance and Water Breathing last **4 minutes**, or **8 minutes** with redstone. Glowstone doesn't shorten them. Other potions, splash and lingering potions, and tipped arrows keep vanilla durations.
+
 ### Always edible
 Every food, cake included, can be eaten even when you're full, like golden apples in vanilla.
 
@@ -31,6 +34,10 @@ Cookies, Sweet Berries, Glow Berries, Apples, Carrots and Melon Slices take 0.8s
 
 ### Stacking
 Soups, stews, and potions (drinkable, splash and lingering) stack to 16, and cakes stack to 64. Eating from a stack returns the bowl/bottle to your inventory.
+
+## Config
+
+Every feature can be switched on or off in `config/pantry.json`, or in-game from [Mod Menu](https://modrinth.com/mod/modmenu) with [Cloth Config](https://modrinth.com/mod/cloth-config) installed (both optional). Longer potions is off by default; everything else is on. Eat when full, faster snacks, stacking and the Golden Carrot change need a restart, and the server and clients should use the same settings for them.
 
 ## Building
 

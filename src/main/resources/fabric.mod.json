@@ -3,7 +3,7 @@
 	"id": "pantry",
 	"version": "${version}",
 	"name": "Pantry",
-	"description": "Food bonus effects, foods that can be eaten when full, and soups, stews and potions that stack to 16.",
+	"description": "Food bonus effects, foods that can be eaten when full, longer drinkable potions, and soups, stews and potions that stack to 16.",
 	"authors": [
 		"maihatsuu"
 	],
@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"maihatsuu.pantry.Pantry"
+		],
+		"modmenu": [
+			"maihatsuu.pantry.client.ModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -27,5 +30,9 @@
 		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api": "*"
+	},
+	"suggests": {
+		"modmenu": "*",
+		"cloth-config": "*"
 	}
 }

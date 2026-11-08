@@ -3,6 +3,7 @@ package maihatsuu.pantry.food;
 import java.util.List;
 import java.util.Map;
 
+import maihatsuu.pantry.PantryConfig;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +33,7 @@ public final class FoodBonuses {
 	}
 
 	public static void apply(Player player, Item item) {
-		if (player.level().isClientSide()) {
+		if (player.level().isClientSide() || !PantryConfig.get().foodBonuses) {
 			return;
 		}
 
