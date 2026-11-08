@@ -12,7 +12,7 @@ import com.google.gson.JsonParseException;
 import net.fabricmc.loader.api.FabricLoader;
 
 /**
- * Feature toggles, saved to config/pantry.json. Everything defaults to on except longer potions.
+ * Feature toggles, saved to config/pantry.json. Everything defaults to on.
  * Item component settings (eat when full, fast snacks, bigger stacks, Golden Carrot nerf) are applied
  * once at startup, so they need a restart and have to match between client and server.
  */
@@ -27,7 +27,7 @@ public final class PantryConfig {
 	public boolean eatWhenFull = true;
 	public boolean fastSnacks = true;
 	public boolean biggerStacks = true;
-	public boolean longerPotions = false;
+	public boolean longerPotions = true;
 	public boolean goldenCarrotNerf = true;
 
 	public static PantryConfig get() {

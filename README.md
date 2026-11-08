@@ -19,7 +19,7 @@ Some foods grant an extra effect. Food tooltips list these, along with the benef
 | Golden Carrot | Night Vision, 30s |
 | Mushroom Stew | Absorption I, 30s |
 
-### Longer potions (off by default)
+### Longer potions
 Drinkable Swiftness, Strength, Leaping, Night Vision, Invisibility, Fire Resistance and Water Breathing last **4 minutes**, or **8 minutes** with redstone. Glowstone doesn't shorten them. Other potions, splash and lingering potions, and tipped arrows keep vanilla durations.
 
 ### Always edible
@@ -36,7 +36,7 @@ Soups, stews, potions (drinkable, splash and lingering) and cakes stack to 16. E
 
 ## Config
 
-Every feature can be switched on or off in `config/pantry.json`, or in-game from [Mod Menu](https://modrinth.com/mod/modmenu) with [Cloth Config](https://modrinth.com/mod/cloth-config) installed (both optional). Longer potions is off by default; everything else is on. Eat when full, faster snacks, stacking and the Golden Carrot change need a restart, and the server and clients should use the same settings for them.
+Every feature can be switched on or off in `config/pantry.json`, or in-game from [Mod Menu](https://modrinth.com/mod/modmenu) with [Cloth Config](https://modrinth.com/mod/cloth-config) installed (both optional). Everything is on by default. Eat when full, faster snacks, stacking and the Golden Carrot change need a restart, and the server and clients should use the same settings for them.
 
 ## Building
 

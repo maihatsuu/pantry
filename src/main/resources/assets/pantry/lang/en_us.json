@@ -2,17 +2,17 @@
 	"config.pantry.title": "Pantry",
 	"config.pantry.general": "General",
 	"config.pantry.foodBonuses": "Food Bonus Effects",
-	"config.pantry.foodBonuses.tooltip": "Some foods grant a bonus effect, like Speed II from cookies.",
+	"config.pantry.foodBonuses.tooltip": "Some foods grant a bonus effect.",
 	"config.pantry.foodEffectTooltips": "Food Effect Tooltips",
-	"config.pantry.foodEffectTooltips.tooltip": "Show the beneficial effects a food grants in its tooltip, including Golden Apples.",
+	"config.pantry.foodEffectTooltips.tooltip": "Show a food's beneficial effects in its tooltip.",
 	"config.pantry.eatWhenFull": "Eat When Full",
-	"config.pantry.eatWhenFull.tooltip": "All foods, including cake, can be eaten when your hunger bar is full.",
+	"config.pantry.eatWhenFull.tooltip": "Eat any food at full hunger.",
 	"config.pantry.fastSnacks": "Fast Snacks",
-	"config.pantry.fastSnacks.tooltip": "Cookies, berries, apples, carrots and melon slices eat twice as fast.",
+	"config.pantry.fastSnacks.tooltip": "Small snacks eat twice as fast.",
 	"config.pantry.biggerStacks": "Bigger Stacks",
 	"config.pantry.biggerStacks.tooltip": "Soups, stews, potions and cakes stack to 16.",
 	"config.pantry.longerPotions": "Longer Potions",
-	"config.pantry.longerPotions.tooltip": "Seven drinkable potions last 4 minutes, or 8 with redstone.",
+	"config.pantry.longerPotions.tooltip": "Many drinkable potions last 4 minutes, or 8 with redstone.",
 	"config.pantry.goldenCarrotNerf": "Golden Carrot Nerf",
-	"config.pantry.goldenCarrotNerf.tooltip": "Golden Carrots give 8 saturation instead of 14.4."
+	"config.pantry.goldenCarrotNerf.tooltip": "Lowers Golden Carrot saturation to 8."
 }
